@@ -3,12 +3,11 @@
 <p>タイトル：<%= @post.title %></p>
 
 <p>言語名：<%= @post.language.lang_name %></p>
-<%# 
     <% if @post.images.attached? %>
-        <%# <%= @post.images.each do |image| %> %>
-            <%# <%= image_tag image %> %>
-        <%# <% end %> %>
-    <%# <% end %>
+        <% @post.images.each do |image| %>
+            <p><%= image_tag image, size:"200x200" %></p>
+        <% end %>
+    <% end %>
 <p>内容：<%= @post.body %></p>
 
 <%= link_to "一覧に戻る", posts_path %> | <%= link_to "編集する", edit_post_path %>

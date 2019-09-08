@@ -1,5 +1,17 @@
+<h2>ユーザ情報</h2>
 <p><%= @user.name %></p>
 <p><%= @user.email%></p>
 <%= link_to "プロフ編集画面", edit_user_path(@user) %>
 
-<p><%= link_to "投稿画面へ", new_post_path %> </p>
+<p><%= link_to "投稿する", new_post_path %> </p>
+
+<h2>投稿の一覧</h2>
+<% @posts.each do |post| %>
+
+    <%= link_to post_path(post.id) do %>
+        <p><%= post.title %></p>
+    <% end %>
+        <p>言語名：<%= post.language.lang_name %></p>
+
+
+<% end %>
