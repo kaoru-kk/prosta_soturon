@@ -12,6 +12,7 @@ class PostsController < ApplicationController
   end
 
   def edit
+    @post = Post.find(params[:id])
   end
 
   def create
@@ -25,13 +26,22 @@ class PostsController < ApplicationController
 
 
   def destroy
+
   end
 
   def update
+    post = Post.find(params[:id])
+
+    params[:post][:image_id].each do |image_id|
+      image = post.images.find(image_id)
+      image.purge
+    end
+    post.update(post_params)
+    redirect_to post_path(post)
   end
 
   private
   def post_params
-    params.require(:post).permit(:user_id, :language_id, :title, :body)
+    params.require(:post).permit(:user_id, :language_id, :title, :body, images: [])
   end
 end
