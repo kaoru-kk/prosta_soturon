@@ -10,6 +10,23 @@
   </head>
 
   <body>
+  <div class="header">
+    <% if user_signed_in? %>
+        <%= link_to "一覧画面", posts_path %>
+        <%= link_to "ユーザ詳細画面へ", user_path(current_user.id)%>
+        <%= link_to "ログアウト", destroy_user_session_path, method: :delete %>
+
+    <% else %>
+        <%= link_to "ログイン画面", new_user_session_path %>
+        <%= link_to "会員登録画面", new_user_registration_path %>
+    <% end %>
+  </div>
+  <style>
+  .header{
+    float: right;
+  }
+  </style>
     <%= yield %>
   </body>
 </html>
+

@@ -1,12 +1,3 @@
 <h1>topページ</h1>
 
-<% if user_signed_in? %>
-    <%= link_to "一覧画面", users_path %>
-    <%= link_to "ログアウト", destroy_user_session_path, method: :delete %>
-    <p><%= link_to "ユーザ詳細画面へ", user_path(current_user.id)%></p>
-<% else %>
-    <%= link_to "ログイン画面", new_user_session_path %>
-
-    <%= link_to "会員登録画面", new_user_registration_path %>
-<% end %>
 

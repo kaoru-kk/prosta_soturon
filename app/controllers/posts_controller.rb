@@ -26,12 +26,13 @@ class PostsController < ApplicationController
 
 
   def destroy
-
+    post = Post.find(params[:id])
+    post.destroy
+    redirect_to posts_path
   end
 
   def update
     post = Post.find(params[:id])
-
     params[:post][:image_id].each do |image_id|
       image = post.images.find(image_id)
       image.purge

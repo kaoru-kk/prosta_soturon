@@ -9,9 +9,9 @@
 <% @posts.each do |post| %>
 
     <%= link_to post_path(post.id) do %>
-        <p><%= post.title %></p>
+        <%= post.title %>
     <% end %>
-        <p>言語名：<%= post.language.lang_name %></p>
-
+        [<%= post.language.lang_name %>]
+<br>
 
 <% end %>
