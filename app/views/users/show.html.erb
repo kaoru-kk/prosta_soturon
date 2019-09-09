@@ -1,6 +1,9 @@
 <h2>ユーザ情報</h2>
 <p><%= @user.name %></p>
 <p><%= @user.email%></p>
+<% if @user.image.attached? %>
+    <p><%= image_tag @user.image, size:"50x50" %></p>
+<% end %>
 <%= link_to "プロフ編集画面", edit_user_path(@user) %>
 
 <p><%= link_to "投稿する", new_post_path %> </p>

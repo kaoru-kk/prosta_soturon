@@ -1,14 +1,14 @@
 <%= form_with model: @post do |m| %>
     <p><%= m.text_field :title %></p>
 
-    <p><%= m.text_area :body %></p>
+    <p><%= m.text_area :body,rows:20, cols:40 %></p>
 
     <p><%= m.collection_select :language_id, Language.all, :id, :lang_name %></p>
 
     <p><%= m.file_field :images, multiple: true %></p>
-
+<p>削除したい画像にチェックしてください</p>
     <% @post.images.each do |image| %>
-        <%= m.check_box :image_id, {:multiple => true}, image.id, false %>
+        <%= m.check_box :check, {:multiple => true}, image.id, false %>
         <%= image_tag image, :size=>"100x100" %> <br>
     <% end %>
 
