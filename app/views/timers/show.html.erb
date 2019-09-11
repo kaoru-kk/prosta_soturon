@@ -1,0 +1,9 @@
+<%= link_to "タイマーを止める",user_timer_path(current_user.id, @timer.id), method: :patch %>
+<br>
+<%= @timer.created_at %><br>
+<%= @timer.updated_at %>
+
+<%= form_with(model:@timer, url:user_timer_path(current_user.id, @timer.id), method: :patch) do |d| %>
+    <%= d.submit %>
+<% end %>
+
