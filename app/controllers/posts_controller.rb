@@ -3,6 +3,10 @@ class PostsController < ApplicationController
     @posts = current_user.posts.all
   end
 
+  def search
+    @posts_search = current_user.posts.where(["title LIKE(?)", "%#{params[:keyword]}%"])
+  end
+
   def new
     @post = Post.new
   end

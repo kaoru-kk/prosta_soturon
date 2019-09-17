@@ -1,11 +1,12 @@
 class UsersController < ApplicationController
+  
   def index
   end
 
   def show
     @user = User.find(params[:id])
     @posts = current_user.posts.all
-    @time = Time.new
+    @timer = Timer.new
   end
 
   def edit

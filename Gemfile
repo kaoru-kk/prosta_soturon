@@ -67,6 +67,9 @@ group :development, :test do
   gem 'pry-rails'
   gem 'pry-byebug'
   gem 'pry-doc'
+  gem 'hirb'
+  gem 'hirb-unicode'
 end
 
-gem "jquery-rails"
+gem 'bootstrap-sass', '~> 3.3.6'
+gem 'jquery-rails'

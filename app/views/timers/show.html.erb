@@ -1,9 +1,15 @@
-<%= link_to "タイマーを止める",user_timer_path(current_user.id, @timer.id), method: :patch %>
 <br>
-<%= @timer.created_at %><br>
-<%= @timer.updated_at %>
+<p>お疲れ様です！</p>
+<%= @timer.hour %>時間<%= @timer.min %>分<%= @timer.sec %>秒勉強しました。
 
-<%= form_with(model:@timer, url:user_timer_path(current_user.id, @timer.id), method: :patch) do |d| %>
+<p>こちらで修正できます。</p>
+<%= form_for @timer, url:timer_path(@timer.id), method: :patch do |d| %>
+    <%= d.number_field :hour, max:24 %>時間<br>
+    <%= d.number_field :min, max: 59 %>分<br>
+    <%= d.number_field :sec, max:59 %>秒<br>
     <%= d.submit %>
 <% end %>
 
+合計<%= @hour_total %>時間
+<%= @min_total %>分
+<%= @sec_total %>秒勉強しています

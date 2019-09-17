@@ -1,0 +1,6 @@
+<%= form_for @timer,url:timers_path,method: :post do |d| %>
+    <%= d.number_field :hour, max:24 %>時間<br>
+    <%= d.number_field :min, max: 59 %>分<br>
+    <%= d.number_field :sec, max:59 %>秒<br>
+    <%= d.submit %>
+<% end %>

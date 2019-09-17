@@ -1,32 +1,58 @@
-<h2>ユーザ情報</h2>
-<p><%= @user.name %></p>
-<p><%= @user.email%></p>
-<% if @user.image.attached? %>
-    <p><%= image_tag @user.image, size:"50x50" %></p>
-<% end %>
-<%= link_to "プロフ編集画面", edit_user_path(@user) %>
+<div class="user_show">
+  <div class="container">
+      <div class="col-lg-3">
 
-<p><%= link_to "投稿する", new_post_path %> </p>
+        <div class="user_info">
+          <div class="user_content">
+            <h4>ユーザ情報</h4>
+            <% if @user.image.attached? %>
+                <p><%= image_tag @user.image, size:"70x70" %></p>
+            <% else %>
+                <p><%= image_tag "no_image.png", size:"70x70" %></p>
+            <% end %>
+            <p><%= @user.name %></p>
+            <p><%= @user.email%></p>
 
-<h2>投稿の一覧</h2>
-<% @posts.each do |post| %>
+            <%= link_to "プロフ編集画面", edit_user_path(@user) %>
+          </div>
+        </div>
 
-    <%= link_to post_path(post.id) do %>
-        <%= post.title %>
-    <% end %>
-        [<%= post.language.lang_name %>]
-<br>
+        <div class="post_all">
+          <div class="post_content">
+          <h4>投稿の一覧</h4>
+            <div class="post_each">
+              <% @posts.each do |post| %>
+                  ・<%= link_to post_path(post.id) do %><%= post.title %><% end %><br><br>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
 
-<% end %>
+    <div class="col-lg-9">
+      <div class="right">
+        <div class="stopwatch">
+          <div class="timer_content">
+            <div id="clock">00:00:00</div><br>
+            <form>
+                <input type="button" id="start" value="Start">
+                <input type="button" id="stop" value="Stop" disabled>
+                <input type="button" id="restart" value="Restart" disabled>
+                <input type="button" id="finish" value="finish" disabled>
+            </form>
+          </div>
+        </div>
 
-<%= link_to "タイマー測定開始",user_timers_path(current_user.id),method: :post %>
+        <%= link_to new_post_path do %>
+        <div class="post_new">
+            <div class="post_link">投稿する</div>
+        </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
 
-<div id="clock">00:00:00</div>
-<form>
-    <input type="button" id="start" value="Start">
-    <input type="button" id="stop" value="Stop" disabled>
-    <input type="button" id="restart" value="Restart" disabled>
-</form>
 
 <script>
 $(function () {
@@ -37,7 +63,7 @@ $(function () {
   var timer;
 
   // スタート
-  $('#start').click(function() {
+  $(document).on("click", "#start",function() {
     // 00:00:00から開始
     sec = 0;
     min = 0;
@@ -47,6 +73,18 @@ $(function () {
 
     $(this).prop('disabled', true);
     $('#stop,#reset').prop('disabled', false);
+    $("#finish").prop("disabled",false);
+
+    $(window).bind("beforeunload", function(){
+      return ('離れる？');
+    });
+    $(document).on("click","#show_a", function(){
+      if(confirm("このページから移動するとタイマーが止まります。遷移しますか？")){
+        return true;
+      } else {
+        return false;
+      }
+    });
   });
 
   // ストップ
@@ -56,18 +94,6 @@ $(function () {
 
     $(this).prop('disabled', true);
     $('#restart').prop('disabled', false);
-    //ストップした時の時間をconsoleに出力
-        console.log($("#clock").text());
-
-        var a = $("#clock").text();
-
-        const b = a.slice(0, 2);
-        const c = a.slice(3, 5);
-        const d = a.slice(6, 8);
-
-        console.log(b);
-        console.log(c);
-        console.log(d);
 
   });
 
@@ -80,22 +106,37 @@ $(function () {
     $('#stop').prop('disabled', false);
   });
 
-  // リセット
-  $('#reset').click(function() {
-    // 初期状態
-    sec = 0;
-    min = 0;
-    hour = 0;
-    $('#clock').html('00:00:00');
-    clearInterval(timer);
+  $(document).on('click', "#finish", function(){
+        var count = $("#clock").text();
 
-    $('#stop,#restart,#reset').prop('disabled', true);
-    $('#start').prop('disabled', false);
+        const hour = count.slice(0, 2);
+        const min = count.slice(3, 5);
+        const sec = count.slice(6, 8);
+
+        console.log(hour);
+        console.log(min);
+        console.log(sec);
+
+
+        $.ajax({
+          url: "http://localhost:3000/timers",
+          type: "POST",
+          datatype :"json",
+          data: {timer: {hour: hour, min: min, sec: sec}}
+        })
+        .done(function(data){
+        clearInterval(timer);
+        $('#stop').prop('disabled', true);
+
+        })
+        .fail(function(){
+          alert("送信に失敗しました")
+        })
+
   });
-
- /**
-  * カウントアップ
-  */
+/**
+* カウントアップ
+*/
   function countup()
   {
     sec += 1;
@@ -119,5 +160,71 @@ $(function () {
   }
 });
 
-
 </script>
+
+<style>
+.user_show {
+  margin-top:20px;
+}
+/* ユーザ関連 */
+.user_info{
+  border: 2px solid grey;
+  padding: 15px;
+}
+.user_content {
+  text-align: center;
+}
+
+/* post関連 */
+
+.post_all{
+  margin-top: 10px;
+  padding:20px;
+  border:2px solid grey;
+}
+.post_content{
+  text-align:center;
+}
+.post_each{
+  text-align:left;
+}
+
+/* ストップウォッチ関連 */
+.right{
+  margin: 0 10px 0 70px;
+}
+.stopwatch{
+  float:left;
+  margin-top:20px;
+  width: 300px;
+  height:100px;
+  position:relative;
+  background-color: #00FF00;
+}
+#clock{
+  text-align:center;
+  font-size:25px;
+}
+.timer_content{
+  position:absolute;
+  top: 50%;
+  left: 47%;
+  transform: translateY(-50%) translateX(-50%);
+}
+/* 新規投稿 */
+.post_new{
+  float:left;
+  margin: 20px 0 0 20px;
+  width: 300px;
+  height:100px;
+  position:relative;
+  background-color: blue;
+}
+.post_link{
+  color:white;
+  font-size:25px;
+  top: 40%;
+  left: 35%;
+  position: absolute;
+}
+</style>
