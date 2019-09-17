@@ -1,11 +1,29 @@
-<%= form_with model: @post do |m| %>
-    <p>タイトル　<%= m.text_field :title %></p>
+<% if @post.errors.any? %>
+    <div id="error_explanation">
 
-    <p>　　内容　<%= m.text_area :body %></p>
+    <h2><%= @post.errors.count %>errors prohibited this obj from being saved:</h2>
+    <ul>
+        <% @post.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+        <% end %>
+    </ul>
+    </div>
+<% end %>
+<%= form_for @post do |m| %>
 
-    <p>　言語名　<%= m.collection_select :language_id, Language.all, :id, :lang_name %></p>
+    <p>タイトル:<%= m.text_field :title %></p>
 
-    <p>　　画像　<%= m.file_field :images, multiple: true %></p>
+    <p>　　内容:<%= m.text_area :body %></p>
+
+    <p>　言語名:<%= m.collection_select :language_id, Language.all, :id, :lang_name %></p>
+
+    <p>　　画像:<%= m.file_field :images, multiple: true %></p>
 
     <p>　　　　　<%= m.submit %></p>
 <% end %>
+
+<style>
+.error_explanation{
+    margin-bottom:30px;
+}
+</style>

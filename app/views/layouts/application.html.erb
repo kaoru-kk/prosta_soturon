@@ -19,7 +19,7 @@
           <ul>
             <% if user_signed_in? %>
                   <li><%= link_to "ユーザ詳細画面へ", user_path(current_user.id),class:'glyphicon glyphicon-user'%></li>
-                  <li><%= link_to "投稿一覧画面", posts_path,class:'glyphicon glyphicon-book' %></li>
+                  <li><%= link_to "投稿する", new_post_path,class:'glyphicon glyphicon-book' %></li>
                   <li><%= link_to "時間を入力する", new_timer_path,class:'glyphicon glyphicon-time' %></li>
                   <li><%= link_to "ログアウト", destroy_user_session_path, method: :delete,class:'glyphicon glyphicon-fire' %></li>
             <% else %>

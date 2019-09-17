@@ -1,4 +1,5 @@
 class TimersController < ApplicationController
+    before_action :timer_user,only:[:show, :update]
 
     def create
         timer = Timer.new(timer_params)
@@ -44,16 +45,23 @@ class TimersController < ApplicationController
     end
 
     def update
-        timer = Timer.find(params[:id])
         timer.hour = params[:timer][:hour]
         timer.min = params[:timer][:min]
         timer.sec = params[:timer][:sec]
         timer.save
-        redirect_to user_timer_path(current_user.id, timer)
+        redirect_to timer_path(timer.id)
     end
 
     private
     def timer_params
         params.require(:timer).permit(timer: [:hour, :min, :sec])
+    end
+
+    def timer_user
+        timer = Timer.find(params[:id])
+        if current_user.id != timer.user_id
+            flash[:notice] = "不正な画面遷移です"
+            redirect_to user_path(current_user.id)
+        end
     end
 end
