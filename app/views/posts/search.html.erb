@@ -1,0 +1,10 @@
+    <% @posts_search.each do |post| %>
+        <p>タイトル：
+    <%= link_to post_path(post.id) do%>
+        <%= post.title %>
+    <% end %>
+    </p>
+    <p>言語名：<%= post.language.lang_name %></p>
+
+    <p>内容：<%= post.body %></p>
+    <% end %>

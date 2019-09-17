@@ -1,10 +1,12 @@
 class UsersController < ApplicationController
+  
   def index
   end
 
   def show
     @user = User.find(params[:id])
     @posts = current_user.posts.all
+    @timer = Timer.new
   end
 
   def edit
@@ -22,6 +24,6 @@ class UsersController < ApplicationController
 
   private
   def user_params
-    params.require(:user).permit(:email, :name)
+    params.require(:user).permit(:email, :name, :image)
   end
 end

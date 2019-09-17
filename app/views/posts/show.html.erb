@@ -1,6 +1,5 @@
-<p>ユーザ名：<%= @post.user.name %></p>
-
 <p>タイトル：<%= @post.title %></p>
+<p>ユーザ名：<%= @post.user.name %></p>
 
 <p>言語名：<%= @post.language.lang_name %></p>
     <% if @post.images.attached? %>
@@ -10,4 +9,7 @@
     <% end %>
 <p>内容：<%= @post.body %></p>
 
-<%= link_to "一覧に戻る", posts_path %> | <%= link_to "編集する", edit_post_path %>
+<%= @post.created_at %><br>
+<%= @post.updated_at %>
+
+<%= link_to "一覧に戻る", posts_path %> | <%= link_to "編集する", edit_post_path %> | <%= link_to "投稿の削除", post_path(@post), method: :delete %>

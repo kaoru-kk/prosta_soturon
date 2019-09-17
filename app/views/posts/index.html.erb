@@ -1,5 +1,5 @@
-<% @posts.each do |post| %>
-    <p>タイトル：
+    <% @posts.each do |post| %>
+        <p>タイトル：
     <%= link_to post_path(post.id) do%>
         <%= post.title %>
     <% end %>
@@ -7,4 +7,5 @@
     <p>言語名：<%= post.language.lang_name %></p>
 
     <p>内容：<%= post.body %></p>
-<% end %>
+    <% end %>
+
