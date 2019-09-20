@@ -9,21 +9,43 @@
     </ul>
     </div>
 <% end %>
-<%= form_for @post do |m| %>
 
-    <p>タイトル:<%= m.text_field :title %></p>
+<div class="post_form">
+    <div class="margin">
+        <%= form_for @post do |m| %>
 
-    <p>　　内容:<%= m.text_area :body %></p>
+            <p>タイトル:　<%= m.text_field :title %></p>
 
-    <p>　言語名:<%= m.collection_select :language_id, Language.all, :id, :lang_name %></p>
+            <p>内容:　　　　<%= m.text_area :body %></p>
 
-    <p>　　画像:<%= m.file_field :images, multiple: true %></p>
+            <p>言語名:　　　　　　<%= m.collection_select :language_id, Language.all, :id, :lang_name %></p>
 
-    <p>　　　　　<%= m.submit %></p>
-<% end %>
+            <p><%= m.file_field :images, multiple: true %></p>
 
+            <p><%= m.submit %></p>
+        <% end %>
+    </div>
+</div>
 <style>
 .error_explanation{
     margin-bottom:30px;
 }
+.post_form {
+    margin-top:30px;
+    width: 100%;
+}
+.margin{
+    text-align: center;
+}
+input[type="file"]{
+    display: inline-block;
+}
 </style>
+
+<script>
+// $("form").submit(function(){
+//     const title = $("#post_title").val();
+
+//     $("#post_title").val("#"+ title);
+// })
+</script>

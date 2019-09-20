@@ -45,6 +45,7 @@ class TimersController < ApplicationController
     end
 
     def update
+        timer = Timer.find(params[:id])
         timer.hour = params[:timer][:hour]
         timer.min = params[:timer][:min]
         timer.sec = params[:timer][:sec]

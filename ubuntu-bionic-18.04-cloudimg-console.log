@@ -545,4 +545,13 @@ Welcome to [1mUbuntu 18.04.2 LTS[0m!
 
 Ubuntu 18.04.2 LTS ubuntu-bionic ttyS0
 
-ubuntu-bionic login: 
+ubuntu-bionic login: [115993.243554] Out of memory: Kill process 7959 (bundle) score 224 or sacrifice child
+[115993.248280] Killed process 8034 (sh) total-vm:4628kB, anon-rss:68kB, file-rss:0kB, shmem-rss:0kB
+[115994.456739] Out of memory: Kill process 7959 (bundle) score 224 or sacrifice child
+[115994.459229] Killed process 7959 (bundle) total-vm:1353712kB, anon-rss:232840kB, file-rss:0kB, shmem-rss:0kB
+[116526.806375] Out of memory: Kill process 755 (mysqld) score 175 or sacrifice child
+[116526.809133] Killed process 755 (mysqld) total-vm:1616812kB, anon-rss:176716kB, file-rss:0kB, shmem-rss:0kB
+[116974.662077] Out of memory: Kill process 8326 (cc1plus) score 183 or sacrifice child
+[116974.663841] Killed process 8326 (cc1plus) total-vm:242212kB, anon-rss:190416kB, file-rss:0kB, shmem-rss:0kB
+[157653.206676] Out of memory: Kill process 31198 (gem) score 537 or sacrifice child
+[157653.211123] Killed process 31198 (gem) total-vm:694224kB, anon-rss:540608kB, file-rss:16kB, shmem-rss:0kB
