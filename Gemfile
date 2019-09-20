@@ -76,3 +76,5 @@ gem 'jquery-rails'
 
 gem "redcarpet"
 gem 'coderay'
+
+gem 'kaminari','~> 1.1.1'

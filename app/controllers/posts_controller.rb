@@ -2,7 +2,7 @@ class PostsController < ApplicationController
   before_action :post_user,except: [:index, :new, :create]
   
   def index
-    @posts = current_user.posts.all
+    @posts = current_user.posts.page(params[:page]).reverse_order
   end
 
   def search
@@ -11,6 +11,7 @@ class PostsController < ApplicationController
 
   def new
     @post = Post.new
+    @sample = Post.find(61)
   end
 
   def show
