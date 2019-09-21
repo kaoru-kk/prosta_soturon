@@ -36,6 +36,8 @@
         <div class="stopwatch">
           <div class="timer_content">
             <div id="clock">00:00:00</div><br>
+        </div>
+
             <form>
                 <input type="button" id="start" value="Start">
                 <input type="button" id="stop" value="Stop" disabled>
@@ -43,7 +45,6 @@
                 <input type="button" id="finish" value="finish" disabled>
             </form>
           </div>
-        </div>
 
         <%= link_to new_post_path do %>
         <div class="post_new">
@@ -77,9 +78,8 @@ $(function () {
     $('#stop,#reset').prop('disabled', false);
     $("#finish").prop("disabled",false);
 
-    $(window).bind("beforeunload", function(){
-      return ('離れる？');
-    });
+
+
     $(document).on("click","#show_a", function(){
       if(confirm("このページから移動するとタイマーが止まります。遷移しますか？")){
         return true;
@@ -228,5 +228,14 @@ $(function () {
   top: 40%;
   left: 35%;
   position: absolute;
+}
+input[type="button"]{
+  width:45px;
+  height:30px;
+  margin-left:5px;
+}
+form{
+  margin-top:59px;
+  margin-left:40px;
 }
 </style>

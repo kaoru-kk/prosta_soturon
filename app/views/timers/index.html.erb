@@ -1,0 +1,208 @@
+<script src="https://cdn.jsdelivr.net/npm/moment@latest/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.min.js"></script>
+
+<div class="month_select">
+    <select id="month_search">
+        <option value="1">1月</option>
+        <option value="2">2月</option>
+        <option value="3">3月</option>
+        <option value="4">4月</option>
+        <option value="5">5月</option>
+        <option value="6">6月</option>
+        <option value="7">7月</option>
+        <option value="8">8月</option>
+        <option value="9">9月</option>
+        <option value="10">10月</option>
+        <option value="11">11月</option>
+        <option value="12">12月</option>
+    </select>
+    <input type="submit" id="month_submit">
+</div>
+
+
+<div class="graph">
+<canvas id="chartBox"></canvas>
+</div>
+
+<div class="time_total">
+    合計<%= @hour_total %>時間
+    <%= @min_total %>分
+    <%= @sec_total %>秒勉強しています
+</div>
+
+<%# Timer.where(created_at: '2019-09-21'..Time.zone.now) %>
+<%# その日から現在までの %>
+<%#
+1日の時間each
+hour min sec
+
+終わったら次の日の計算を行う
+
+end %>
+<script>
+
+$(document).on("click", "#month_submit", function(){
+    var month_num = $("#month_search").val();
+    const year = 2019;
+
+//new Dateは０番＝1月なので、入力した値＋１月の値が入る、だから−１してる
+    var zmonth = (Number(month_num)-1);
+    var sdt = new Date(year, zmonth);
+
+//new Dateは０番＝1月なので、入力した値＋１月の値が入る、だから−１してる
+
+    var month = (Number(month_num));
+    var dt = new Date(year, month, 0);
+    $.ajax({
+        url:"http://localhost:3000/timers",
+        type: "GET",
+        datatype:"json",
+        data:{sdt, dt}
+    })
+    .done(function(data){
+        $(document).ready(function() {
+            new Chart(document.getElementById("chartBox"), {
+            type: 'bar',
+            data: {
+                datasets: [{
+                    data: [12, 19, 3, 5, 2, 3, 23, 15,0,0,0,1,1,1,1,1,1,1,1,1,1,1,4,3,5,3,5,4,4,2],
+                    label: "",
+                    borderWidth: 2,
+                    borderColor: "#3e95cd",
+                    fill: false,
+                    pointRadius: 0
+                }]
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                    type: 'time',
+                    time: {
+                        parser: 'YYYY-MM-DD',
+                        unit: 'day',
+                        displayFormats: {
+                        day: 'MMM D'
+                        },
+                        min: sdt,
+                        max: dt
+                    },
+                    ticks: {
+                        source: 'data'
+                    }
+                    }]
+                },
+                legend: {
+                    display: false
+                },
+                animation: {
+                    duration: 0,
+                },
+                hover: {
+                    animationDuration: 0,
+                },
+                responsiveAnimationDuration: 0
+            },
+            plugins: [{
+                beforeInit: function(chart) {
+                    var time = chart.options.scales.xAxes[0].time, // 'time' object reference
+                    timeDiff = moment(time.max).diff(moment(time.min), 'd'); // difference (in days) between min and max date
+                    // populate 'labels' array
+                    // (create a date string for each date between min and max, inclusive)
+                    for (i = 0; i <= timeDiff; i++) {
+                        var _label = moment(time.min).add(i, 'd').format('YYYY-MM-DD HH:mm:ss');
+                        chart.data.labels.push(_label);
+                    }
+                }
+            }]
+            });
+
+        });
+    })
+    .fail(function(){
+        alert("送信に失敗しました")
+    })
+});
+
+const set_graph = $(function(){
+    var month_num = $("#month_search").val();
+    const year = 2019;
+    var sdt = new Date(year, 8);
+
+    var month = 9;
+    var dt = new Date(year, month, 0);
+        $(document).ready(function() {
+            new Chart(document.getElementById("chartBox"), {
+            type: 'bar',
+            data: {
+                datasets: [{
+                    data: [12, 19, 3, 5, 2, 3, 23, 15,0,0,0,1,1,1,1,1,1,1,1,1,1,1,4,3,5,3,5,4,4,2],
+                    label: "",
+                    borderWidth: 2,
+                    borderColor: "#3e95cd",
+                    fill: false,
+                    pointRadius: 0
+                }]
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                    type: 'time',
+                    time: {
+                        parser: 'YYYY-MM-DD',
+                        unit: 'day',
+                        displayFormats: {
+                        day: 'MMM D'
+                        },
+                        min: sdt,
+                        max: dt
+                    },
+                    ticks: {
+                        source: 'data'
+                    }
+                    }]
+                },
+                legend: {
+                    display: false
+                },
+                animation: {
+                    duration: 0,
+                },
+                hover: {
+                    animationDuration: 0,
+                },
+                responsiveAnimationDuration: 0
+            },
+            plugins: [{
+                beforeInit: function(chart) {
+                    var time = chart.options.scales.xAxes[0].time, // 'time' object reference
+                    timeDiff = moment(time.max).diff(moment(time.min), 'd'); // difference (in days) between min and max date
+                    // populate 'labels' array
+                    // (create a date string for each date between min and max, inclusive)
+                    for (i = 0; i <= timeDiff; i++) {
+                        var _label = moment(time.min).add(i, 'd').format('YYYY-MM-DD HH:mm:ss');
+                        chart.data.labels.push(_label);
+                    }
+                }
+            }]
+        });
+    });
+})
+
+</script>
+
+
+<style >
+.month_select{
+    margin:20px;
+    text-align:center;
+}
+.graph{
+    width:700px;
+    height:600px;
+    margin:50px auto;
+}
+.time-total{
+    display:inline-block;
+    margin:0 auto;
+}
+</style>

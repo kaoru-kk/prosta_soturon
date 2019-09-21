@@ -1,12 +1,20 @@
 class PostsController < ApplicationController
-  before_action :post_user,except: [:index, :new, :create]
-  
+  before_action :post_user,except: [:index, :new, :create, :search]
+
   def index
     @posts = current_user.posts.page(params[:page]).reverse_order
+    @search = current_user.posts.ransack(params[:q])
+    @lang = Language.all
   end
 
   def search
-    @posts_search = current_user.posts.where(["title LIKE(?)", "%#{params[:keyword]}%"])
+    @search_search = current_user.posts.ransack(params[:q])
+    @lang = Language.all
+
+    @search = current_user.posts.search(search_params)
+    @inu = @search.result(distinct: true)
+    @posts = @inu.page(params[:page]).reverse_order
+
   end
 
   def new
@@ -62,5 +70,9 @@ class PostsController < ApplicationController
         flash[:notice] = "不正な画面遷移です"
         redirect_to user_path(current_user.id)
     end
+  end
+
+  def search_params
+    params.require(:q).permit(:title_cont, :language_id_eq, :created_at_gteq, :created_at_lteq)
   end
 end

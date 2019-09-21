@@ -4,6 +4,7 @@
     <title>ProstaSoturon</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
@@ -21,7 +22,8 @@
                   <li><%= link_to "ユーザ詳細画面へ", user_path(current_user.id),class:'glyphicon glyphicon-user'%></li>
                   <li><%= link_to "投稿する", new_post_path,class:'glyphicon glyphicon-book' %></li>
                   <li><%= link_to "時間を入力する", new_timer_path,class:'glyphicon glyphicon-time' %></li>
-                  <li><%= link_to "ログアウト", destroy_user_session_path, method: :delete,class:'glyphicon glyphicon-fire' %></li>
+                  <li><%= link_to "投稿一覧", posts_path,class:'glyphicon glyphicon-fire' %></li>
+                  <li><%= link_to "グラフ", timers_path,class:'glyphicon glyphicon-fire' %></li>
             <% else %>
                   <li><%= link_to "ログイン画面", new_user_session_path,class:'glyphicon glyphicon-user' %></li>
                   <li><%= link_to "会員登録画面", new_user_registration_path,class:'glyphicon glyphicon-user' %></li>
@@ -53,7 +55,9 @@
   font-weight: 100;
 }
 
+
 </style>
+
     <%= yield %>
   </body>
 </html>

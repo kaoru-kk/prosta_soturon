@@ -1,3 +1,13 @@
+<div class="search">
+    <%= search_form_for(@search,url:posts_search_path) do |f|%>
+        <%= f.collection_select :language_id_eq, @lang, :id, :lang_name, :include_blank => "言語選択" %>
+        <%= f.text_field :title_cont, :placeholder => "タイトル" %>
+        <%= f.text_field :created_at_gteq, :placeholder => "ex.09/01" %>
+        <%= f.text_field :created_at_lteq, :placeholder => "ex.09/05" %>
+        <%= f.submit %>
+    <% end %>
+</div>
+
 <div class="post_all">
     <% @posts.each do |post| %>
         <div class="post_each">
@@ -20,8 +30,14 @@
 
 </div>
 <style>
+/* search */
+.search{
+    margin-top:30px;
+    width:100%;
+    text-align:center;
+}
 .post_all{
-    margin-top: 20px;
+    margin-top: 50px;
 }
 .post_each{
     margin: 0 auto;
