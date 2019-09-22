@@ -12,15 +12,11 @@
 //
 //= require Chart.min
 //= require rails-ujs
-//= require activestorage
 //= require turbolinks
+//= require activestorage
 //= require_tree .
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap-sprockets
 
-$(window).bind("load", function(){
-    if(document.URL.indexOf("users/show.html.erb")) {
-        $('a').attr('id','show_a');
-    }
-});
+
