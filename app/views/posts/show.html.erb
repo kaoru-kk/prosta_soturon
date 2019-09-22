@@ -1,15 +1,42 @@
-<p>タイトル：<%= @post.title %></p>
-<p>ユーザ名：<%= @post.user.name %></p>
+<div class="show_all">
 
-<p>言語名：<%= @post.language.lang_name %></p>
-    <% if @post.images.attached? %>
-        <% @post.images.each do |image| %>
-            <p><%= image_tag image, size:"200x200" %></p>
+    <div class="user_name">ユーザ名：<%= @post.user.name %></div>
+    <div class="created_at">最終更新日:<%= @post.updated_at %></div>
+
+    <div class="lang_name">言語名：<%= @post.language.lang_name %></div>
+
+    <div class="post_title"><%= markdown(@post.title) %></div>
+
+
+        <% if @post.images.attached? %>
+            <% @post.images.each do |image| %>
+                <p><%= image_tag image, size:"200x200" %></p>
+            <% end %>
         <% end %>
-    <% end %>
-<p>内容：<%= @post.body %></p>
+    <div class="post_body">
+        <p><%= markdown(@post.body).html_safe  %></p>
+    </div>
 
-<%= @post.created_at %><br>
-<%= @post.updated_at %>
+    <%= link_to "一覧に戻る", posts_path %> | <%= link_to "編集する", edit_post_path %> | <%= link_to "投稿の削除", post_path(@post), method: :delete %>
+</div>
 
-<%= link_to "一覧に戻る", posts_path %> | <%= link_to "編集する", edit_post_path %> | <%= link_to "投稿の削除", post_path(@post), method: :delete %>
+
+
+<style>
+
+.show_all{
+    width:1024px;
+    
+    margin: 30px auto;
+}
+.post_body{
+    
+}
+.post_title{
+    
+}
+.lang_name{
+    width:150px;
+    border: solid 1px #dcdcdc;
+    background-color: #dcdcdc;
+}

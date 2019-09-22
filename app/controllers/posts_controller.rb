@@ -1,14 +1,25 @@
 class PostsController < ApplicationController
+  before_action :post_user,except: [:index, :new, :create, :search]
+
   def index
-    @posts = current_user.posts.all
+    @posts = current_user.posts.page(params[:page]).reverse_order
+    @search = current_user.posts.ransack(params[:q])
+    @lang = Language.all
   end
 
   def search
-    @posts_search = current_user.posts.where(["title LIKE(?)", "%#{params[:keyword]}%"])
+    @search_search = current_user.posts.ransack(params[:q])
+    @lang = Language.all
+
+    @search = current_user.posts.search(search_params)
+    @inu = @search.result(distinct: true)
+    @posts = @inu.page(params[:page]).reverse_order
+
   end
 
   def new
     @post = Post.new
+    @sample = Post.find(61)
   end
 
   def show
@@ -20,12 +31,14 @@ class PostsController < ApplicationController
   end
 
   def create
-    post = Post.new(post_params)
+    @post = Post.new(post_params)
+    @post.user_id = current_user.id
 
-    post.user_id = current_user.id
-
-    post.save
-    redirect_to post_path(post)
+    if @post.save
+      redirect_to post_path(@post)
+    else
+      render "new"
+    end
   end
 
 
@@ -49,5 +62,17 @@ class PostsController < ApplicationController
   private
   def post_params
     params.require(:post).permit(:user_id, :language_id, :title, :body, images: [])
+  end
+
+  def post_user
+    post = Post.find(params[:id])
+    if current_user.id != post.user_id
+        flash[:notice] = "不正な画面遷移です"
+        redirect_to user_path(current_user.id)
+    end
+  end
+
+  def search_params
+    params.require(:q).permit(:title_cont, :language_id_eq, :created_at_gteq, :created_at_lteq)
   end
 end

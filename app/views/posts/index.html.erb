@@ -1,11 +1,80 @@
+<div class="search">
+    <%= search_form_for(@search,url:posts_search_path) do |f|%>
+        <%= f.collection_select :language_id_eq, @lang, :id, :lang_name, :include_blank => "言語選択" %>
+        <%= f.text_field :title_cont, :placeholder => "タイトル" %>
+        　　<%= f.text_field :created_at_gteq, :placeholder => "ex.09/01" %>~
+        <%= f.text_field :created_at_lteq, :placeholder => "ex.09/05" %>
+        <%= f.submit %>
+    <% end %>
+</div>
+
+<div class="post_all">
     <% @posts.each do |post| %>
-        <p>タイトル：
-    <%= link_to post_path(post.id) do%>
-        <%= post.title %>
-    <% end %>
-    </p>
-    <p>言語名：<%= post.language.lang_name %></p>
+        <div class="post_each">
+            <div class="post_top">
+                <div class="post_when"><%= post.updated_at %></div>
+                <div class="post_lang"><%= post.language.lang_name %></div> <br>
+            </div>
 
-    <p>内容：<%= post.body %></p>
+            <div class="post_bottom">
+                <div class="post_title">
+                <%= link_to post_path(post.id) do%>
+                    <%= post.title %>
+                <% end %>
+                </div>
+            </div>
+        </div>
     <% end %>
+    <div class="paginate"><%= paginate @posts, class:"paginate" %></div>
+</div>
 
+</div>
+<style>
+/* search */
+.search{
+    margin-top:30px;
+    width:100%;
+    text-align:center;
+}
+.post_all{
+    margin-top: 50px;
+}
+.post_each{
+    margin: 0 auto;
+    width:700px;
+    height:70px;
+    margin-bottom: 40px;
+    border:solid 1px black;
+
+}
+.post_lang{
+    float:left;
+    font-size:20px;
+    padding-left:15px;
+
+}
+.post_when{
+    float:right;
+    margin-left:30px;
+}
+
+.post_title{
+    float:left;
+    padding-left:20px;
+    font-size:24px;
+
+}
+
+.post_top{
+    background-color: skyblue;
+    height:30px;
+    border-bottom:solid 1px black;
+}
+.post_bottom{
+    width:100%;
+
+}
+.paginate{
+    text-align:center;
+    font-size: 20px;
+</style>
