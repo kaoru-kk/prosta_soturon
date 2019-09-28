@@ -50,6 +50,15 @@
         </div>
         <% end %>
       </div>
+
+      <%# グラフ %>
+
+      <div class="graph">
+      <div class = "all_time">
+        <p>合計<%= @hour_total %>時間<%= @min_total %>分<%= @sec_total %>秒勉強しています</p>
+      </div>
+        <canvas id="chartBox"></canvas>
+      </div>
     </div>
   </div>
 </div>
@@ -168,6 +177,80 @@ $(function () {
 
   });
 
+
+// graph
+
+
+$(function(){
+    function getFirstDate (date) {
+      return new Date(date.getFullYear(), date.getMonth(), 1);
+    }
+    var sdt = getFirstDate(new Date());
+
+    function getLastDate (date) {
+      return new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    }
+    var dt = getLastDate(new Date()); 
+
+    const year = 2019;
+    var month_num = $("#month_search").val();
+
+      $(document).ready(function() {
+            new Chart(document.getElementById("chartBox"), {
+            type: 'bar',
+            data: {
+                datasets: [{
+                    data: [12, 19, 3, 5, 22, 3, 2, 15,0,0,0,1,1,1,1,1,1,1,1,1,1,1,4,3,5,3,5,4,4,2],
+                    label: "",
+                    borderWidth: 2,
+                    borderColor: "#3e95cd",
+                    fill: false,
+                    pointRadius: 0
+                }]
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                    type: 'time',
+                    time: {
+                        parser: 'YYYY-MM-DD',
+                        unit: 'day',
+                        displayFormats: {
+                        day: 'MMM D'
+                        },
+                        min: sdt,
+                        max: dt
+                    },
+                    ticks: {
+                        source: 'data'
+                    }
+                    }]
+                },
+                legend: {
+                    display: false
+                },
+                animation: {
+                    duration: 0,
+                },
+                hover: {
+                    animationDuration: 0,
+                },
+                responsiveAnimationDuration: 0
+            },
+            plugins: [{
+                beforeInit: function(chart) {
+                    var time = chart.options.scales.xAxes[0].time,
+                    timeDiff = moment(time.max).diff(moment(time.min), 'd');
+
+                        for (i = 0; i <= timeDiff; i++) {
+                        var _label = moment(time.min).add(i, 'd').format('YYYY-MM-DD HH:mm:ss');
+                        chart.data.labels.push(_label);
+                    }
+                }
+            }]
+        });
+    });
+})
 </script>
 
 <style>
@@ -243,5 +326,17 @@ input[type="button"]{
 form{
   margin-top:59px;
   margin-left:40px;
+}
+
+/* graph */
+.graph{
+    width:700px;
+    height:600px;
+    margin:240px auto;
+  padding-right:70px;
+}
+.all_time{
+  text-align:center;
+  font-size: 20px;
 }
 </style>

@@ -25,15 +25,38 @@ class TimersController < ApplicationController
                 @sec_total = @sec_total - 60
                 @min_total += 1
             end
-
         end
+        input_day = "2019-09-02"
+
+        all_time = current_user.timers.where(created_at: input_day.in_time_zone.all_month)
+        
+        array_time = (all_time.group(:created_at).sum(:total)).to_a
+        
+        slice = array_time.count
+        array = Array.new(slice, 0)
+        
+        (0..slice-1).each do |f|
+            array[f] = array_time[f][1]
+        end
+        
+
     end
     def create
         timer = Timer.new(timer_params)
         timer.user_id = current_user.id
         timer.hour = params[:timer][:hour]
+        hour = params[:timer][:hour].to_i * 3600
+
         timer.min = params[:timer][:min]
+        min = params[:timer][:min].to_i * 60
+
         timer.sec = params[:timer][:sec]
+        sec = params[:timer][:sec].to_i
+
+        timer.detail = params[:timer][:detail]
+
+
+        timer.total = hour + min + sec
         timer.save
         redirect_to timer_path(timer.id)
     end
@@ -67,7 +90,6 @@ class TimersController < ApplicationController
                 @sec_total = @sec_total - 60
                 @min_total += 1
             end
-
         end
     end
 
@@ -76,6 +98,7 @@ class TimersController < ApplicationController
         timer.hour = params[:timer][:hour]
         timer.min = params[:timer][:min]
         timer.sec = params[:timer][:sec]
+        timer.detail = params[:timer][:detail]
         timer.save
         redirect_to timer_path(timer.id)
     end

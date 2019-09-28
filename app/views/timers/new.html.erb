@@ -1,7 +1,19 @@
-<%= form_for @timer,url:timers_path,method: :post do |d| %>
-    <%= d.number_field :hour, max:24 %>時間<br>
-    <%= d.number_field :min, max: 59 %>分<br>
-    <%= d.number_field :sec, max:59 %>秒<br>
-    <%= d.submit %>
-<% end %>
+<div class="timer">
+<h3>時間を入力してください</h3>
+    <%= form_for @timer, url:timers_path, method: :post do |d| %>
+        <%= d.number_field :hour, max:24 %>時間<br><br>
+        <%= d.number_field :min, max: 59 %>分<br><br>
+        <%= d.number_field :sec, max:59 %>秒<br><br>
+        <%= d.text_area :detail,:placeholder => "メモ記入欄" %><br>
+        <%= d.submit %>
+    <% end %>
+</div>
 
+<style>
+
+.timer{
+    margin-top:40px;
+    text-align:center;
+}
+
+</style>

@@ -22,8 +22,8 @@
                   <li><%= link_to "ユーザ詳細画面へ", user_path(current_user.id),class:'glyphicon glyphicon-user'%></li>
                   <li><%= link_to "投稿する", new_post_path,class:'glyphicon glyphicon-book' %></li>
                   <li><%= link_to "時間を入力する", new_timer_path,class:'glyphicon glyphicon-time' %></li>
-                  <li><%= link_to "投稿一覧", posts_path,class:'glyphicon glyphicon-fire' %></li>
-                  <li><%= link_to "グラフ", timers_path,class:'glyphicon glyphicon-fire' %></li>
+                  <li><%= link_to "投稿一覧", posts_path,class:'glyphicon glyphicon-pencil' %></li>
+                  <li><%= link_to "グラフ", timers_path,class:'glyphicon glyphicon-stats' %></li>
             <% else %>
                   <li><%= link_to "ログイン画面", new_user_session_path,class:'glyphicon glyphicon-user' %></li>
                   <li><%= link_to "会員登録画面", new_user_registration_path,class:'glyphicon glyphicon-user' %></li>
@@ -32,6 +32,12 @@
         </nav>
       </div>
     </header>
+    <% if notice %>
+  <p class="alert alert-notice"><%= notice %></p>
+<% end %>
+<% if alert %>
+  <p class="alert alert-error"><%= alert %></p>
+<% end %>
 <style>
 * {
   margin: 0;
@@ -57,6 +63,9 @@
 
 
 </style>
+<script src="https://cdn.jsdelivr.net/npm/moment@latest/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.min.js"></script>
+
 
     <%= yield %>
   </body>

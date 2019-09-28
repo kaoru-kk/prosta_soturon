@@ -19,7 +19,6 @@ class PostsController < ApplicationController
 
   def new
     @post = Post.new
-    @sample = Post.find(61)
   end
 
   def show
@@ -73,6 +72,6 @@ class PostsController < ApplicationController
   end
 
   def search_params
-    params.require(:q).permit(:title_cont, :language_id_eq, :created_at_gteq, :created_at_lteq)
+    params.require(:q).permit(:title_cont,:body_cont, :language_id_eq, :created_at_gteq, :created_at_lteq)
   end
 end

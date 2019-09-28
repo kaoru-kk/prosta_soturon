@@ -2,6 +2,7 @@
     <%= search_form_for(@search_search,url:posts_search_path) do |f|%>
         <%= f.collection_select :language_id_eq, @lang, :id, :lang_name, :include_blank => "指定なし" %>
         <%= f.text_field :title_cont, :placeholder => "タイトル" %>
+        <%= f.text_area :body_cont, :placeholder => "内容"%>
         <%= f.text_field :created_at_gteq, :placeholder => "ex.09/01" %>
         <%= f.text_field :created_at_lteq, :placeholder => "ex.09/05" %>
 

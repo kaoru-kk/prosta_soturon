@@ -1,15 +1,23 @@
+<div class="timer">
+    <br>
+    <p>お疲れ様です！</p>
+    <h4><%= @timer.hour %>時間<%= @timer.min %>分<%= @timer.sec %>秒勉強しました。</h4>
+
+    <p>こちらで修正できます。</p>
+    <%= form_for @timer, url:timer_path(@timer.id), method: :patch do |d| %>
+        <%= d.number_field :hour, max:24 %>時間<br><br>
+        <%= d.number_field :min, max: 59 %>分<br><br>
+        <%= d.number_field :sec, max:59 %>秒<br><br>
+        <%= d.text_area :detail,:placeholder => "メモ記入欄" %><br>
+        <%= d.submit %>
+    <% end %>
 <br>
-<p>お疲れ様です！</p>
-<%= @timer.hour %>時間<%= @timer.min %>分<%= @timer.sec %>秒勉強しました。
+    合計<%= @hour_total %>時間
+    <%= @min_total %>分
+    <%= @sec_total %>秒勉強しています
+</div>
 
-<p>こちらで修正できます。</p>
-<%= form_for @timer, url:timer_path(@timer.id), method: :patch do |d| %>
-    <%= d.number_field :hour, max:24 %>時間<br>
-    <%= d.number_field :min, max: 59 %>分<br>
-    <%= d.number_field :sec, max:59 %>秒<br>
-    <%= d.submit %>
-<% end %>
-
-合計<%= @hour_total %>時間
-<%= @min_total %>分
-<%= @sec_total %>秒勉強しています
+<style>
+.timer{
+    text-align:center;
+}
