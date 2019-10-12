@@ -26,21 +26,34 @@ class TimersController < ApplicationController
                 @min_total += 1
             end
         end
-        input_day = "2019-09-02"
 
-        all_time = current_user.timers.where(created_at: input_day.in_time_zone.all_month)
-        
-        array_time = (all_time.group(:created_at).sum(:total)).to_a
-        
-        slice = array_time.count
-        array = Array.new(slice, 0)
-        
-        (0..slice-1).each do |f|
-            array[f] = array_time[f][1]
+        if params[:dt].nil?
+            input_day = Date.today
+            slice =   input_day.end_of_month.mday
+            gon.alltime = Array.new(slice, 0)
+            @first_page = "閲覧したい月を選んでください"
+        else
+            input_day = params[:dt]
+            slice =   (params[:dt][8] + params[:dt][9]).to_i
+            all_time = current_user.timers.where(created_at: input_day.in_time_zone.all_month)
+            array_time = (all_time.group("DAY(created_at)").sum(:total)).to_a
+            gon.alltime = Array.new(slice, 0)
+            gon.start_day = params[:sdt]
+            gon.end_day = params[:dt]
+            @select_month = (Date.parse(params[:dt])).strftime("%m")
         end
-        
 
+        if array_time.blank?
+            @first_page ||= @no_date = @select_month + "月のデータはありません"
+        else
+            (array_time.length).times do |f|
+                day_total = array_time[f][0]
+                gon.alltime[day_total -1 ] = ((array_time[f][1])/3600.to_f).round(1)
+            end
+            @month_time = @select_month + "月の勉強時間:" +  all_time.sum(:hour).to_s + "時間" + all_time.sum(:min).to_s + "分" + all_time.sum(:sec).to_s + "秒"
+        end
     end
+
     def create
         timer = Timer.new(timer_params)
         timer.user_id = current_user.id

@@ -82,3 +82,5 @@ gem 'ransack'
 gem 'chart-js-rails', '~> 0.1.4'
 
 gem 'turbolinks', '~> 5'
+
+gem "gon"

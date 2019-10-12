@@ -4,8 +4,8 @@
     <title>ProstaSoturon</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%= stylesheet_link_tag  'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= include_gon %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
@@ -32,9 +32,7 @@
         </nav>
       </div>
     </header>
-    <% if notice %>
-  <p class="alert alert-notice"><%= notice %></p>
-<% end %>
+
 <% if alert %>
   <p class="alert alert-error"><%= alert %></p>
 <% end %>

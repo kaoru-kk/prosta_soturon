@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_22_130149) do
+ActiveRecord::Schema.define(version: 2019_09_28_082304) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -52,9 +52,9 @@ ActiveRecord::Schema.define(version: 2019_09_22_130149) do
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "hour"
-    t.integer "min"
-    t.integer "sec"
+    t.integer "hour", default: 0
+    t.integer "min", default: 0
+    t.integer "sec", default: 0
     t.integer "total"
     t.text "detail"
   end

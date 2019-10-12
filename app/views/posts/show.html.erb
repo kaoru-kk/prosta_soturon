@@ -1,5 +1,4 @@
 <div class="show_all">
-
     <div class="user_name">ユーザ名：<%= @post.user.name %></div>
     <div class="created_at">最終更新日:<%= @post.updated_at %></div>
 
@@ -17,7 +16,7 @@
         <p><%= markdown(@post.body).html_safe  %></p>
     </div>
 
-    <%= link_to "一覧に戻る", posts_path %> | <%= link_to "編集する", edit_post_path %> | <%= link_to "投稿の削除", post_path(@post), method: :delete %>
+    <%= link_to "一覧に戻る", posts_path %> | <%= link_to "編集する", edit_post_path %> | <%= link_to "投稿の削除", post_path(@post), method: :delete, data: {confirm: "投稿を削除しますか？"} %>
 </div>
 
 

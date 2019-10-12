@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resources :languages
 
   resources :users
+  get "practice" => "timers#practice"
   resources :timers,only: [:show, :new, :index,:create, :update ]
 
 
