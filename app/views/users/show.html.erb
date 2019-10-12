@@ -23,8 +23,10 @@
               <% @posts.each do |post| %>
                   ・<%= link_to post_path(post.id) do %><%= post.title %><% end %><br><br>
               <% end %>
-              <div class="paginate"><%= paginate @posts, class:"paginate" %></div>
-              <%= link_to "投稿一覧へ", posts_path%>
+              <div class="hooder">
+                <div class="paginate"><%= paginate @posts, class:"paginate" %></div>
+                <%= link_to "投稿一覧へ", posts_path %>
+              </div>
             </div>
           </div>
         </div>
@@ -347,5 +349,8 @@ img {
     width: 100px;
     height: 100px;
     border-radius: 50%;
+}
+.hooder{
+  text-align:center;
 }
 </style>

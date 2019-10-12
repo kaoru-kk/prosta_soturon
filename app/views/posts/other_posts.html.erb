@@ -1,53 +1,53 @@
 
 <div class="search">
     <div class="glyphicon glyphicon-remove", id="remove"></div>
-    <%= search_form_for(@search,url:posts_path) do |f|%>
+
+    <%= search_form_for(@search,url:posts_other_users_posts_path) do |f|%>
         <p><%= f.collection_select :language_id_eq, @lang, :id, :lang_name, :include_blank => "言語選択" %></p><br>
         <p><%= f.text_field :title_cont, :placeholder => "タイトル" %></p><br>
-	<p><%= f.text_area :body_cont, :placeholder => "本文" %></p><br>
+        <p><%= f.text_area :body_cont, :placeholder => "本文" %></p><br>
         <p><%= f.text_field :created_at_gteq, :placeholder => "ex.09/01" %>~<%= f.text_field :created_at_lteq, :placeholder => "ex.09/05" %></p><br>
         <%= f.submit "検索", id:"search_submit"  %><br><br>
     <% end %>
 </div>
 
+<h2 class="page_title">＜ みんなの投稿 ＞</h2>
 
 <a href= "#" class="glyphicon glyphicon-search" id="custom_search">カスタム検索</a>
 
-    <div id="other_user">
-        <%= link_to "みんなの投稿はこちら" ,posts_other_users_posts_path %>
-    </div>
-
 <div class="post_all">
+    <% @posts.each do |post| %>
+        <div class="post_each">
+        <div class="post_left">
+            <% if post.user.image.attached? %>
+                <p><%= image_tag post.user.image, size:"70x70" %></p>
+            <% else %>
+                <p><%= image_tag "no_image.png", size:"70x70" %></p>
+            <% end %>
+        </div>
+            <div class="post_top">
+                <div class="post_when"><%= post.updated_at %></div>
+                <div class="post_when"><%= post.user.name %></div>
+                <div class="post_lang"><%= post.language.lang_name %></div> <br>
+            </div>
 
-    <% if @posts == [] %>
-        <br><br><h1 class="no_post" style="text-align:center;">
-            投稿はありません
-        </h1>
-    <% else %>
-        <% @posts.each do |post| %>
-            <div class="post_each">
-                <div class="post_top">
-                    <div class="post_when"><%= post.updated_at %></div>
-                    <div class="post_lang"><%= post.language.lang_name %></div> <br>
-                </div>
-
-                <div class="post_bottom">
-                    <div class="post_title">
-                    <%= link_to post_path(post.id) do%>
-                        <%= post.title %>
-                    <% end %>
-                    </div>
+            <div class="post_bottom">
+                <div class="post_title">
+                <%= link_to post_path(post.id) do%>
+                    <%= post.title %>
+                <% end %>
                 </div>
             </div>
-        <% end %>
-        <div class="paginate"><%= paginate @posts, class:"paginate" %></div>
-    </div>
+        </div>
     <% end %>
+    <div class="paginate"><%= paginate @posts, class:"paginate" %></div>
+</div>
 
+</div>
 <style>
 /* search */
 .search{
-    margin-top:30px;
+    margin-top:10px;
     width:100%;
     text-align:center;
 }
@@ -68,24 +68,31 @@
     padding-left:15px;
 
 }
+.page_title{
+margin-left:540px;
+}
 .post_when{
     float:right;
     margin-left:30px;
+    font-size:15px;
 }
-
+.post_left{
+    float:left;
+    height:69px;
+    border-right:1px solid black;
+}
+.post_left img{
+    height:67.5px;
+}
 .post_title{
     float:left;
     padding-left:20px;
     font-size:24px;
 
 }
-#other_user{
-    font-size:19px;
-    margin-top:20px;
-    margin-left:64%;
-}
+
 .post_top{
-    background-color: skyblue;
+    background-color: #FAAC58;
     height:30px;
     border-bottom:solid 1px black;
 }
@@ -103,7 +110,7 @@
 #custom_search{
     font-size: 20px;
     left:64%;
-    margin-top:50px;
+    margin-top:25px;
     display: inline-block;
     border: 2px solid grey;
     padding:15px;
@@ -136,6 +143,7 @@ textarea{
 $(document).on('click', "#custom_search", function(){
     $("#custom_search").fadeToggle();
     $('.post_all').fadeToggle();
+    $('.page_title').fadeToggle();
     $(".search").slideToggle();
     return false;
 });
@@ -143,6 +151,7 @@ $(document).on('click', "#custom_search", function(){
 $("#remove").on("click",function(){
     $("#custom_search").slideToggle();
     $('.post_all').slideToggle();
+    $('.page_title').slideToggle();
     $(".search").fadeToggle();
     return false;
 });

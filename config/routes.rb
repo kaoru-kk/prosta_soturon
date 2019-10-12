@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   root to: "top#top"
   devise_for :users
   get "posts/search" => "posts#search"
+  get "posts/other_users_posts" => "posts#other_posts"
 
   resources :posts
   resources :languages

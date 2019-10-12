@@ -1,20 +1,17 @@
 class PostsController < ApplicationController
-  before_action :post_user,except: [:index, :new, :create, :search]
+  before_action :post_user,except: [:index, :show, :new,:update, :create, :search,:other_posts]
 
   def index
     @posts = current_user.posts.page(params[:page]).reverse_order
     @search = current_user.posts.ransack(params[:q])
     @lang = Language.all
-  end
-
-  def search
-    @search_search = current_user.posts.ransack(params[:q])
-    @lang = Language.all
-
-    @search = current_user.posts.search(search_params)
-    @inu = @search.result(distinct: true)
-    @posts = @inu.page(params[:page]).reverse_order
-
+    if params[:q] != nil
+      @search_search = current_user.posts.ransack(params[:q])
+      @lang = Language.all
+      @search = current_user.posts.search(search_params)
+      @inu = @search.result(distinct: true)
+      @posts = @inu.page(params[:page]).reverse_order
+    end
   end
 
   def new
@@ -40,7 +37,6 @@ class PostsController < ApplicationController
     end
   end
 
-
   def destroy
     post = Post.find(params[:id])
     post.destroy
@@ -58,6 +54,19 @@ class PostsController < ApplicationController
       end
     post.update(post_params)
     redirect_to post_path(post)
+  end
+
+  def other_posts
+    @posts = Post.page(params[:page]).reverse_order
+    @search = Post.ransack(params[:q])
+    @lang = Language.all
+    if params[:q] != nil
+      @search_search = current_user.posts.ransack(params[:q])
+      @lang = Language.all
+      @search = current_user.posts.search(search_params)
+      @inu = @search.result(distinct: true)
+      @posts = @inu.page(params[:page]).reverse_order
+    end
   end
 
   private

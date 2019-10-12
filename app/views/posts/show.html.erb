@@ -16,7 +16,10 @@
         <p><%= markdown(@post.body).html_safe  %></p>
     </div>
 
-    <%= link_to "一覧に戻る", posts_path %> | <%= link_to "編集する", edit_post_path %> | <%= link_to "投稿の削除", post_path(@post), method: :delete, data: {confirm: "投稿を削除しますか？"} %>
+    <%= link_to "一覧に戻る", posts_path %>
+    <% if @post.user_id == current_user.id %>
+        | <%= link_to "編集する", edit_post_path %> | <%= link_to "投稿の削除", post_path(@post), method: :delete, data: {confirm: "投稿を削除しますか？"} %> 
+    <% end %>
 </div>
 
 
