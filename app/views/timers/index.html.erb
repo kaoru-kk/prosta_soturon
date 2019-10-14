@@ -1,3 +1,4 @@
+
 <div class="month_select">
     <%= form_tag(timers_path, :method => "get") do  %>
         <%= select_tag(:month,options_for_select( [["1月", 1],["2月", 2],["3月", 3],["4月", 4],["5月", 5],["6月", 6],["7月", 7],["8月", 8],["9月", 9],["10月", 10],["11月", 11],["12月", 12]]), id:"month_search") %>
@@ -14,7 +15,9 @@
         <h4 style="text-align:center;">現在の総勉強時間: <%= @hour_total %>時間<%= @min_total %>分<%= @sec_total %>秒です</h4>
     </div>
     <canvas id="chartBox"></canvas>
+    <%= link_to "手動で時間を入力したい場合はこちらへ", new_timer_path, class:"link_timer" %></li>
 </div>
+
 
 <script>
 $(document).on("click", "#month_submit", function(){
@@ -114,7 +117,7 @@ $(document).on("click", "#month_submit", function(){
 .graph{
     width:700px;
     height:600px;
-    margin:50px auto;
+    margin:50px auto 0 auto;
 }
 .time-total{
     display:inline-block;
@@ -125,5 +128,8 @@ $(document).on("click", "#month_submit", function(){
     padding:20px;
     border: 1px solid black;
     width:450px;
+}
+.link_timer{
+    margin: 0 0 40px 430px;
 }
 </style>

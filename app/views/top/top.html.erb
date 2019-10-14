@@ -11,12 +11,11 @@
 		<section id="Portfolio">
 			<div class="container">
 				<h2 class="odai">
-					Portfolio
+					Outline
 				</h2>
 			<p class="odai-text">
-                it is a long established fact that reader will ne distracted by the eadable <br>
-                content of apage when looking at its layout. <br>
-                The point of using Lorem Lpsum is that it has more-or-less normal distribution of letters
+                このアプリは日々の勉強時間と学習した内容を記録できます。<br><br><br>
+                あなたのプログラミング学習の手助けをします。	<br><br><br>
             </p>
 			</div>
 		</section>
@@ -24,18 +23,25 @@
 		<section id="section2">
 			<div class="container">
 				<h2 class="odai">
-					Portfolio
+					How to Use
 				</h2>
 			<p class="odai-text">
-                it is a long established fact that reader will ne distracted by the eadable <br>
-                content of apage when looking at its layout. <br>
-                The point of using Lorem Lpsum is that it has more-or-less normal distribution of letters
+            	<div class="text_image">
+            		<div class="text1">①スタートを押して勉強スタートしよう！</div>
+            		<div class="text2">②Finishを押したら勉強時間が保存されます</div>
+            		<div class="text3">③グラフで合計の勉強時間を確認しよう！</div>
+            	</div>
+				<div class="timer_image">                
+					<img  class="timer1">
+	                <img  class="timer2">
+	                <img  class="timer3">
+            	</div>
             </p>
 			</div>
 		</section>
 	</div>
 
-		<section id="Portfolio">
+<!-- 		<section id="Portfolio">
 			<div class="container">
 				<h2 class="odai">
 					Portfolio
@@ -46,7 +52,7 @@
                 The point of using Lorem Lpsum is that it has more-or-less normal distribution of letters
             </p>
 			</div>
-		</section>
+		</section> -->
 <style>
 * {
 	margin: 0;
@@ -122,7 +128,7 @@ header {
 }
 .odai {
 	font-size: 32px;
-	padding-top: 70px;
+	padding-top: 40px;
 	text-align: center;
 	font-family: 'Raleway', sans-serif;
 }
@@ -137,10 +143,59 @@ header {
 .odai-text {
 	font-size: 16px;
 	text-align: center;
-	padding-top: 30px;
-	margin-bottom: 30px;
+	padding-top: 30px;	
 }
+.timer_image{
+	text-align: center;	
+	width: 1280px;
+}
+.timer1{
+	background-image: url(assets/timer1.jpg);
+	background-size: contain;
+	background-repeat:  no-repeat; 
+	background-position: center;
+	width: 310px;
+	height: 190px;
+}
+.timer2{
+	background-image: url(assets/timer2.jpg);
+	background-size: contain;
+	background-repeat:  no-repeat; 
+	background-position: center;
+	width: 310px;
+	height: 190px;
+	margin-left: 40px;
+}
+.timer3{
+	background-image: url(assets/timer3.png);
+	background-size: contain;
+	background-repeat:  no-repeat; 
+	background-position: center;
+	width: 310px;
+	height: 190px;
+	margin-left: 40px;
+	margin-right: 240px;
 
+}
+.text_image{
+ 	display: box;
+  	display: -webkit-box;
+   	box-pack: center;
+  	-webkit-box-pack: center;
+  	margin-bottom: 20px;
+ }
+.text1{
+	font-size: 16px;
+	margin-left: 10px;
+}
+.text2{
+	margin-left: 49px;
+	font-size: 16px;	
+}
+.text3{
+	margin-left: 35px;
+	font-size: 16px;	
+}
 @media screen and (max-width:767px) {
 
 	.container {
@@ -167,4 +222,5 @@ header {
 		margin: 0 auto;
 	}
 }
+
 </style>
