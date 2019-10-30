@@ -27,8 +27,39 @@
         </div>
     </div>
     <div class="mark_ex">
-        <div class="title_ex">見やすい投稿の作り方</div><br>
-        <%= markdown(@sample.body).html_safe  %>
+            <div class="title_ex">見やすい投稿の作り方</div><br>
+        <div class="one_content">
+            <div class="mark_content"># 見出し1</div>
+            <div class="midashi1"">見出し１</div>
+        </div>
+        <div class="one_content">
+            <div class="mark_content">## 見出し2</div>
+            <div class="midashi2">見出し２</div>
+        </div>
+        <div class="one_content">
+            <div class="mark_content">~取り消し線~</div>
+            <div class="torikeshi">取り消し線</div>
+        </div>
+        <div class="one_content">
+            <div class="mark_content">```文章をバッククォーテーション３つで囲む```</div>
+            <div class="border">文章が枠線で囲まれます</div>
+        </div>
+        <div class="one_content">
+            <div class="mark_content">`文章をバッククォーテーション1つで囲む`</div>
+            <div class="border_red">文章が強調表示されます</div>
+        </div>
+        <div class="one_content">
+            <div class="mark_content">*アスタリスク1つで囲む*</div>
+            <div class="italic">文字が斜めになります</div>
+        </div>
+        <div class="one_content">
+            <div class="mark_content">***アスタリスク３つで囲む***</div>
+            <div class="bold">文字が濃くなります</div>
+        </div>
+        <div class="one_content">
+            <div class="mark_content">***アスタリスク３つ記述すると水平線が引けます</div>
+            <div class="line"></div>
+        </div>
     </div>
 </div>
 
@@ -61,19 +92,61 @@ input[type="file"]{
     display: inline-block;
 }
 .mark_ex{
-    padding-left:  90px;
+    padding-left: 90px;
     width: 500px;
-    text-align:left;
+    text-align:center;
+    margin:0 auto;
     display: inline-block;
-    font-size:14px;
-    float:left;
-
+    font-size:18px;
 }
 .title_ex{
-    margin-top:30px;
-    font-size:35px;
+    margin-top:10px;
+    padding:3px;
+    font-size:23px;
+    font-weight:bold;
+    border:2px solid white;
+    background-color:skyblue;
+}
+.mark_content{
+    margin-bottom:8px;
+}
+.one_content{
+    margin-bottom: 20px;
+}
+.midashi1{
+    font-size:27px;
     font-weight:bold;
 }
+.midashi2{
+    font-size:22px;
+    font-weight:bold;
+}
+.torikeshi{
+    text-decoration:line-through;
+}
+.border{
+    background-color: #dcdcdc;
+    border:1px solid black;
+    width:200px;
+    margin: 0 auto;
+}
+.border_red{
+    margin: 0 auto;
+    color: #c7254e;
+    background-color:#f9f2f4;
+    width:200px;
+}
+.italic{
+    font-style:italic;
+}
+.bold {
+    font-weight:bold;
+}
+.line{
+    border-top:1px solid grey;
+}
+
+
 
 </style>
 

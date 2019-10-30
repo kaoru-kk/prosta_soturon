@@ -1,0 +1,104 @@
+
+<%= form_tag(practice_path, :method => "get") do  %>
+    <%= select_tag(:month,options_for_select( [["1m", 1],["2m", 2],["3m", 3],["4m", 4],["5m", 5],["6m", 6],["7m", 7],["8m", 8],["9m", 9],["10m", 10],["11m", 11],["12m", 12]]), id:"month_search") %>
+
+    <%= hidden_field_tag :sdt %>
+    <%= hidden_field_tag :dt %>
+
+    <%= submit_tag "送信", id:"month_submit"%>
+<% end %>
+<div class="graph">
+    <canvas id="chartBox"></canvas>
+</div>
+
+<script>
+$(document).on("click", "#month_submit", function(){
+    var month_num = $("#month_search").val();
+    const year = 2019;
+
+    var zmonth = (Number(month_num)-1);
+    var start_day = new Date(year, zmonth);
+
+    var month = (Number(month_num));
+    var end_day = new Date(year, month, 0);
+            console.log(start_day);
+
+    $("#sdt").val(start_day);
+    $("#dt").val(end_day);
+})
+
+        $(document).ready(function() {
+            new Chart(document.getElementById("chartBox"), {
+            type: 'bar',
+            data: {
+                datasets: [{
+                    data: gon.alltime,
+                    label: "",
+                    borderWidth: 2,
+                    borderColor: "#3e95cd",
+                    fill: false,
+                    pointRadius: 0
+                }]
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                    type: 'time',
+                    time: {
+                        parser: 'YYYY-MM-DD',
+                        unit: "day",
+                        displayFormats: {
+                        day: 'M月D日'
+                        },
+                        min: gon.start_day,
+                        max: gon.end_day
+                    },
+                    ticks: {
+                        source: 'data'
+                    }
+                    }]
+                },
+                legend: {
+                    display: false
+                },
+                animation: {
+                    duration: 0,
+                },
+                hover: {
+                    animationDuration: 0,
+                },
+                responsiveAnimationDuration: 0
+            },
+            plugins: [{
+                beforeInit: function(chart) {
+                    var time = chart.options.scales.xAxes[0].time, // 'time' object reference
+                    timeDiff = moment(time.max).diff(moment(time.min), 'd'); // difference (in days) between min and max date
+                    for (i = 0; i <= timeDiff; i++) {
+                        var _label = moment(time.min).add(i, 'd').format('YYYY-MM-DD HH:mm:ss');
+                        chart.data.labels.push(_label);
+                    }
+                }
+            }]
+            });
+        });
+
+
+
+</script>
+
+
+<style >
+.month_select{
+    margin:20px;
+    text-align:center;
+}
+.graph{
+    width:700px;
+    height:600px;
+    margin:50px auto;
+}
+.time-total{
+    display:inline-block;
+    margin:0 auto;
+}
+</style>

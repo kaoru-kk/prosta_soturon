@@ -1,75 +1,71 @@
-<script src="https://cdn.jsdelivr.net/npm/moment@latest/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.min.js"></script>
 
 <div class="month_select">
-    <select id="month_search">
-        <option value="1">1月</option>
-        <option value="2">2月</option>
-        <option value="3">3月</option>
-        <option value="4">4月</option>
-        <option value="5">5月</option>
-        <option value="6">6月</option>
-        <option value="7">7月</option>
-        <option value="8">8月</option>
-        <option value="9">9月</option>
-        <option value="10">10月</option>
-        <option value="11">11月</option>
-        <option value="12">12月</option>
-    </select>
-    <input type="submit" id="month_submit">
+    <%= form_tag(timers_path, :method => "get") do  %>
+        <%= select_tag(:month,options_for_select( [["1月", 1],["2月", 2],["3月", 3],["4月", 4],["5月", 5],["6月", 6],["7月", 7],["8月", 8],["9月", 9],["10月", 10],["11月", 11],["12月", 12]]), id:"month_search") %>
+        <%= hidden_field_tag :sdt %>
+        <%= hidden_field_tag :dt %>
+        <%= submit_tag "送信", class:"btn btn-default", id:"month_submit"%>
+    <% end %>
 </div>
-
 
 <div class="graph">
-<canvas id="chartBox"></canvas>
+    <div class="month_total">
+        <h4 style="text-align:center;"><%= @first_page %></h4>
+        <h4 style="text-align:center;"><%= @month_time %></h4>
+        <h4 style="text-align:center;">現在の総勉強時間: <%= @hour_total %>時間<%= @min_total %>分<%= @sec_total %>秒です</h4>
+    </div>
+    <canvas id="chartBox"></canvas>
+    <%= link_to "手動で時間を入力したい場合はこちらへ", new_timer_path, class:"link_timer" %></li>
 </div>
 
-<div class="time_total">
-    合計<%= @hour_total %>時間
-    <%= @min_total %>分
-    <%= @sec_total %>秒勉強しています
+<div class="col-xs-3">
+</div>
+<div class="col-xs-6">
+    <table class="table">
+    <tr>
+        <th>日にち</th>
+        <th>合計時間</th>
+        <th>メモ</th>
+        <th></th>
+    </tr>
+
+
+        <% @timers.each do |t| %>
+        <tr>
+            <td><%= t.created_at.strftime("%m月%d日 %H:%M") %>〜</td>
+            <td><%= t.total %></td>
+            <td><%= t.detail %></td>
+            <td><%= link_to "投稿詳細", timer_path(t.id) %></td>
+        </tr>
+        <% end %>
+</table>
+</div>
+<div class="col-xs-3">
+</div>
+<div class="detail">
+
 </div>
 
-<%# Timer.where(created_at: '2019-09-21'..Time.zone.now) %>
-<%# その日から現在までの %>
-<%#
-1日の時間each
-hour min sec
-
-終わったら次の日の計算を行う
-
-end %>
 <script>
-
 $(document).on("click", "#month_submit", function(){
-
-    delete set_graph;
-
     var month_num = $("#month_search").val();
     const year = 2019;
 
-//new Dateは０番＝1月なので、入力した値＋１月の値が入る、だから−１してる
     var zmonth = (Number(month_num)-1);
-    var sdt = new Date(year, zmonth);
-
-//new Dateは０番＝1月なので、入力した値＋１月の値が入る、だから−１してる
+    var start_day = new Date(year, zmonth);
 
     var month = (Number(month_num));
-    var dt = new Date(year, month, 0);
-    $.ajax({
-        url:"http://localhost:3000/timers",
-        type: "GET",
-        datatype:"json",
-        data:{sdt, dt}
-    })
-    .done(function(data){
+    var end_day = new Date(year, month, 0);
+
+    $("#sdt").val(start_day);
+    $("#dt").val(end_day);
+})
         $(document).ready(function() {
             new Chart(document.getElementById("chartBox"), {
             type: 'bar',
             data: {
                 datasets: [{
-                    //９月１日から１０月１日まででこの日を省く
-                    data: [12, 19, 3, 5, 2, 3, 23, 15,0,0,0,1,1,1,1,1,1,1,1,1,1,1,4,3,5,3,5,4,4,2],
+                    data: gon.alltime,
                     label: "",
                     borderWidth: 2,
                     borderColor: "#3e95cd",
@@ -87,19 +83,30 @@ $(document).on("click", "#month_submit", function(){
                         displayFormats: {
                         day: 'M月D日'
                         },
-                        min: sdt,
-                        max: dt
+                        min: gon.start_day,
+                        max: gon.end_day
                     },
                     ticks: {
                         source: 'data'
+                    },
+                    title: {
+                        display: true,
+                        text: "１ヶ月の勉強時間"
                     }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            suggestedMax: 24,
+                            suggestedMin: 0,
+                            stepSize: 3
+                        }
                     }]
                 },
                 legend: {
                     display: false
                 },
                 animation: {
-                    duration: 0,
+                    duration: 10,
                 },
                 hover: {
                     animationDuration: 0,
@@ -110,8 +117,6 @@ $(document).on("click", "#month_submit", function(){
                 beforeInit: function(chart) {
                     var time = chart.options.scales.xAxes[0].time, // 'time' object reference
                     timeDiff = moment(time.max).diff(moment(time.min), 'd'); // difference (in days) between min and max date
-                    // populate 'labels' array
-                    // (create a date string for each date between min and max, inclusive)
                     for (i = 0; i <= timeDiff; i++) {
                         var _label = moment(time.min).add(i, 'd').format('YYYY-MM-DD HH:mm:ss');
                         chart.data.labels.push(_label);
@@ -119,83 +124,19 @@ $(document).on("click", "#month_submit", function(){
                 }
             }]
             });
-
         });
-    })
-    .fail(function(){
-        alert("送信に失敗しました")
-    })
-});
-
-// const set_graph = $(function(){
-//     var month_num = $("#month_search").val();
-//     const year = 2019;
-//     var sdt = new Date(year, 8);
-
-//     var month = 9;
-//     var dt = new Date(year, month, 0);
-//         $(document).ready(function() {
-//             new Chart(document.getElementById("chartBox"), {
-//             type: 'bar',
-//             data: {
-//                 datasets: [{
-//                     data: [12, 19, 3, 5, 2, 3, 23, 15,0,0,0,1,1,1,1,1,1,1,1,1,1,1,4,3,5,3,5,4,4,2],
-//                     label: "",
-//                     borderWidth: 2,
-//                     borderColor: "#3e95cd",
-//                     fill: false,
-//                     pointRadius: 0
-//                 }]
-//             },
-//             options: {
-//                 scales: {
-//                     xAxes: [{
-//                     type: 'time',
-//                     time: {
-//                         parser: 'YYYY-MM-DD',
-//                         unit: 'day',
-//                         displayFormats: {
-//                         day: 'MMM D'
-//                         },
-//                         min: sdt,
-//                         max: dt
-//                     },
-//                     ticks: {
-//                         source: 'data'
-//                     }
-//                     }]
-//                 },
-//                 legend: {
-//                     display: false
-//                 },
-//                 animation: {
-//                     duration: 0,
-//                 },
-//                 hover: {
-//                     animationDuration: 0,
-//                 },
-//                 responsiveAnimationDuration: 0
-//             },
-//             plugins: [{
-//                 beforeInit: function(chart) {
-//                     var time = chart.options.scales.xAxes[0].time, // 'time' object reference
-//                     timeDiff = moment(time.max).diff(moment(time.min), 'd'); // difference (in days) between min and max date
-//                     // populate 'labels' array
-//                     // (create a date string for each date between min and max, inclusive)
-//                     for (i = 0; i <= timeDiff; i++) {
-//                         var _label = moment(time.min).add(i, 'd').format('YYYY-MM-DD HH:mm:ss');
-//                         chart.data.labels.push(_label);
-//                     }
-//                 }
-//             }]
-//         });
-//     });
-// })
-
 </script>
 
 
 <style >
+#month_submit {
+    width: 60px;
+    height: 30px;
+}
+#month_search{
+    width: 70px;
+    height: 30px;
+}
 .month_select{
     margin:20px;
     text-align:center;
@@ -203,10 +144,19 @@ $(document).on("click", "#month_submit", function(){
 .graph{
     width:700px;
     height:600px;
-    margin:50px auto;
+    margin:50px auto 0 auto;
 }
 .time-total{
     display:inline-block;
     margin:0 auto;
+}
+.month_total{
+    margin: 30px auto;
+    padding:20px;
+    border: 1px solid black;
+    width:450px;
+}
+.link_timer{
+    margin: 0 0 40px 430px;
 }
 </style>

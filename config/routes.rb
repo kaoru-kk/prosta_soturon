@@ -1,14 +1,20 @@
-Rails.application.routes.draw do
-  get 'books/index'
-  root to: "top#top"
-  devise_for :users
-  get "posts/search" => "posts#search"
+# frozen_string_literal: true
 
-  resources :posts
+Rails.application.routes.draw do
+
+  get 'books/index'
+  root to: 'top#top'
+  devise_for :users
+  get 'posts/search' => 'posts#search'
+  get 'posts/other_users_posts' => 'posts#other_posts'
+  get 'posts/favorites' => 'posts#fav_post'
+
+  resources :posts do
+    resources :favorites, only: [:create, :destroy]
+  end
   resources :languages
 
   resources :users
-  resources :timers,only: [:show, :new, :index,:create, :update ]
-
-
+  get 'practice' => 'timers#practice'
+  resources :timers, only: %i[show new index create update]
 end

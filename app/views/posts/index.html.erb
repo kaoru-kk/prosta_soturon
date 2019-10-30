@@ -1,34 +1,47 @@
 <div class="search">
-    <%= search_form_for(@search,url:posts_search_path) do |f|%>
-        <%= f.collection_select :language_id_eq, @lang, :id, :lang_name, :include_blank => "言語選択" %>
-        <%= f.text_field :title_cont, :placeholder => "タイトル" %>
-        　　<%= f.text_field :created_at_gteq, :placeholder => "ex.09/01" %>~
-        <%= f.text_field :created_at_lteq, :placeholder => "ex.09/05" %>
-        <%= f.submit %>
+    <div class="glyphicon glyphicon-remove", id="remove"></div>
+    <%= search_form_for(@search,url:posts_path) do |f|%>
+        <p><%= f.collection_select :language_id_eq, @lang, :id, :lang_name, :include_blank => "言語選択" %></p><br>
+        <p><%= f.text_field :title_cont, :placeholder => "タイトル" %></p><br>
+	<p><%= f.text_area :body_cont, :placeholder => "本文" %></p><br>
+        <p><%= f.text_field :created_at_gteq, :placeholder => "ex.09/01" %>~<%= f.text_field :created_at_lteq, :placeholder => "ex.09/05" %></p><br>
+        <%= f.submit "検索", id:"search_submit"  %><br><br>
     <% end %>
+</div>
+
+<a  class="glyphicon glyphicon-search" id="custom_search">カスタム検索</a>
+
+<div id="other_user">
+    <%= link_to "いいねした投稿" ,posts_favorites_path %> / <%= link_to "みんなの投稿" ,posts_other_users_posts_path %>
 </div>
 
 <div class="post_all">
-    <% @posts.each do |post| %>
-        <div class="post_each">
-            <div class="post_top">
-                <div class="post_when"><%= post.updated_at %></div>
-                <div class="post_lang"><%= post.language.lang_name %></div> <br>
-            </div>
 
-            <div class="post_bottom">
-                <div class="post_title">
-                <%= link_to post_path(post.id) do%>
-                    <%= post.title %>
-                <% end %>
+    <% if @posts == [] %>
+        <br><br><h1 class="no_post" style="text-align:center;">
+            投稿はありません
+        </h1>
+    <% else %>
+        <% @posts.each do |post| %>
+            <div class="post_each">
+                <div class="post_top">
+                    <div class="post_when"><%= post.updated_at %></div>
+                    <div class="post_lang"><%= post.language.lang_name %></div> <br>
+                </div>
+
+                <div class="post_bottom">
+                    <div class="post_title">
+                    <%= link_to post_path(post.id) do%>
+                        <%= post.title %>
+                    <% end %>
+                    </div>
                 </div>
             </div>
-        </div>
+        <% end %>
+        <div class="paginate"><%= paginate @posts, class:"paginate" %></div>
+    </div>
     <% end %>
-    <div class="paginate"><%= paginate @posts, class:"paginate" %></div>
-</div>
 
-</div>
 <style>
 /* search */
 .search{
@@ -37,7 +50,7 @@
     text-align:center;
 }
 .post_all{
-    margin-top: 50px;
+    margin-top: 20px;
 }
 .post_each{
     margin: 0 auto;
@@ -64,7 +77,11 @@
     font-size:24px;
 
 }
-
+#other_user{
+    font-size:19px;
+    margin-top:20px;
+    margin-left:59%;
+}
 .post_top{
     background-color: skyblue;
     height:30px;
@@ -77,4 +94,74 @@
 .paginate{
     text-align:center;
     font-size: 20px;
+}
+.search {
+    display:none;
+}
+#custom_search{
+    font-size: 20px;
+    left:64%;
+    margin-top:50px;
+    display: inline-block;
+    border: 2px solid grey;
+    padding:15px;
+    border-radius: 50%;
+}
+input[type="text"]{
+    width: 300px;
+    height: 50px;
+}
+textarea{
+    width:300px;
+    height: 80px;
+}
+.search{
+    margin-top:50px;
+}
+#remove{
+    color:grey;
+    font-size:30px;
+    left:30%;
+}
+#search_submit {
+   height:50px;
+   width:90px;
+}
 </style>
+
+<script>
+$(function(){
+    $(document).on('click', "#custom_search", function(){
+        $(".search, #custom_search, .post_all, #other_user").stop().slideToggle();
+    });
+});
+$(function(){
+    $(document).on("click", "#remove", function(){
+        $(".search , #custom_search, .post_all, #other_user").stop().slideToggle();
+    })
+})
+
+
+// jQuery(function(){
+//     $(document).on('click', "#custom_search", function(){
+//     $("#custom_search").fadeToggle();
+//     $('.post_all').fadeToggle();
+//     $(".search").slideToggle();
+//     return false;
+//   });
+// });
+
+// jQuery(function(){
+//     $("#remove").on("click",function(){
+//     $("#custom_search").slideToggle();
+//     $('.post_all').slideToggle();
+//     $(".search").fadeToggle();
+//     return false;
+//   });
+// })
+$(".post_each").each(function(e, i){
+    console.log(i);
+})
+
+
+</script>

@@ -6,14 +6,13 @@
 
         <div class="user_info">
           <div class="user_content">
-            <h4>ユーザ情報</h4>
             <% if @user.image.attached? %>
                 <p><%= image_tag @user.image, size:"70x70" %></p>
             <% else %>
                 <p><%= image_tag "no_image.png", size:"70x70" %></p>
             <% end %>
             <p><%= @user.name %></p>
-            <%= link_to "プロフ編集画面", edit_user_path(@user) %>
+            <%= link_to "プロフ詳細画面", edit_user_path(@user) %>
           </div>
         </div>
 
@@ -24,6 +23,10 @@
               <% @posts.each do |post| %>
                   ・<%= link_to post_path(post.id) do %><%= post.title %><% end %><br><br>
               <% end %>
+              <div class="hooder">
+                <div class="paginate"><%= paginate @posts, class:"paginate" %></div>
+                <%= link_to "投稿一覧へ", posts_path %>
+              </div>
             </div>
           </div>
         </div>
@@ -37,10 +40,10 @@
         </div>
 
             <form>
-                <input type="button" id="start" value="Start">
-                <input type="button" id="stop" value="Stop" disabled>
-                <input type="button" id="restart" value="Restart" disabled>
-                <input type="button" id="finish" value="finish" disabled>
+                <input type="button" class="btn btn-default" id="start" value="スタート" style="width: 64px;">
+                <input type="button" class="btn btn-default" id="stop" value="ストップ" disabled style="width: 64px;"><br>
+                <input type="button" class="btn btn-default" id="restart" value="リスタート" disabled style="width: 64px;">
+                <input type="button" class="btn btn-default" id="finish" value="終了" disabled style="width: 64px;">
             </form>
           </div>
 
@@ -49,6 +52,17 @@
             <div class="post_link">投稿する</div>
         </div>
         <% end %>
+      </div>
+
+      <%# グラフ %>
+
+      <div class="graph">
+      <div class = "all_time">
+        <p>今日までの合計!  <%= @hour_total %>時間<%= @min_total %>分<%= @sec_total %>秒勉強しています</p>
+        <div class="no_data"><%= @no_data %>
+        <div><%= @month_time %>
+      </div>
+        <canvas id="chartBox"></canvas>
       </div>
     </div>
   </div>
@@ -145,12 +159,6 @@ $(function () {
         const hour = count.slice(0, 2);
         const min = count.slice(3, 5);
         const sec = count.slice(6, 8);
-
-        console.log(hour);
-        console.log(min);
-        console.log(sec);
-
-
         $.ajax({
           url: "http://localhost:3000/timers",
           type: "POST",
@@ -168,6 +176,87 @@ $(function () {
 
   });
 
+
+// graph
+
+
+$(function(){
+    function getFirstDate (date) {
+      return new Date(date.getFullYear(), date.getMonth(), 1);
+    }
+    var sdt = getFirstDate(new Date());
+
+    function getLastDate (date) {
+      return new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    }
+    var dt = getLastDate(new Date()); 
+
+    const year = 2019;
+    var month_num = $("#month_search").val();
+
+      $(document).ready(function() {
+            new Chart(document.getElementById("chartBox"), {
+            type: 'bar',
+            data: {
+                datasets: [{
+                    data: gon.array,
+                    label: "",
+                    borderWidth: 2,
+                    borderColor: "#3e95cd",
+                    fill: false,
+                    pointRadius: 0
+                }]
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                    type: 'time',
+                    time: {
+                        parser: 'YYYY-MM-DD',
+                        unit: 'day',
+                        displayFormats: {
+                        day: 'MMM D'
+                        },
+                        min: sdt,
+                        max: dt
+                    },
+                    ticks: {
+                        source: 'data'
+                    }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            suggestedMax: 24,
+                            suggestedMin: 0,
+                            stepSize: 3
+                        }
+                    }]
+                },
+                legend: {
+                    display: false
+                },
+                animation: {
+                    duration: 0,
+                },
+                hover: {
+                    animationDuration: 0,
+                },
+                responsiveAnimationDuration: 0
+            },
+            plugins: [{
+                beforeInit: function(chart) {
+                    var time = chart.options.scales.xAxes[0].time,
+                    timeDiff = moment(time.max).diff(moment(time.min), 'd');
+
+                        for (i = 0; i <= timeDiff; i++) {
+                        var _label = moment(time.min).add(i, 'd').format('YYYY-MM-DD HH:mm:ss');
+                        chart.data.labels.push(_label);
+                    }
+                }
+            }]
+        });
+    });
+})
 </script>
 
 <style>
@@ -198,6 +287,9 @@ $(function () {
 }
 
 /* ストップウォッチ関連 */
+input[type="button"]{
+  padding: 0;
+}
 .right{
   margin: 0 10px 0 70px;
 }
@@ -207,7 +299,7 @@ $(function () {
   width: 300px;
   height:100px;
   position:relative;
-  background-color: #00FF00;
+  background-color: #7fffd4;
 }
 #clock{
   text-align:center;
@@ -226,7 +318,7 @@ $(function () {
   width: 300px;
   height:100px;
   position:relative;
-  background-color: blue;
+  background-color: #00bfff;
 }
 .post_link{
   color:white;
@@ -243,5 +335,25 @@ input[type="button"]{
 form{
   margin-top:59px;
   margin-left:40px;
+}
+
+/* graph */
+.graph{
+    width:700px;
+    height:600px;
+    margin:240px auto;
+  padding-right:70px;
+}
+.all_time{
+  text-align:center;
+  font-size: 20px;
+}
+img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+.hooder{
+  text-align:center;
 }
 </style>

@@ -1,10 +1,41 @@
-<%= form_for @user do |f| %>
+<div class="user_info">
+    <% if @user.image.attached? %>
+        <p><%= image_tag @user.image, size:"70x70" %></p>
+    <% else %>
+        <p><%= image_tag "no_image.png", size:"70x70" %></p>
+    <% end %><br>
 
-    名前：<%= f.text_field :name %><br>
+    <%= form_for @user do |f| %>
+
+        名前：<%= f.text_field :name %><br><br><br>
+
+        アイコン画像：<%= f.file_field :image %><br><br>
 
 
-    アイコン画像：<%= f.file_field :image %><br>
+        <%= f.submit %>
 
-    <%= f.submit %>
+    <% end %>
+</div>
 
-<% end %>
+<div class="logout">
+    <%= link_to "ログアウトします", destroy_user_session_path,method: :delete %>
+</div>
+
+<style>
+input[type="file"]{
+    display: inline-block;
+}
+.user_info{
+    text-align: center;
+    border: solid 2px grey;
+    margin:80px auto 0 auto;
+    height: 500px;
+    width:500px;
+}
+img {
+    width: 200px;
+    height:200px;
+    margin-top:50px;
+    border-radius: 50%;
+}
+</style>

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class LanguagesController < ApplicationController
   def new
     @language = Language.new
@@ -9,12 +11,11 @@ class LanguagesController < ApplicationController
     redirect_to language_path(language.id)
   end
 
-  def show
-  end
+  def show; end
 
   private
+
   def language_params
     params.require(:language).permit(:lang_name)
   end
-
 end
