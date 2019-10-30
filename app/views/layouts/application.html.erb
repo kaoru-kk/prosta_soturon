@@ -20,8 +20,8 @@
           <ul>
             <% if user_signed_in? %>
                   <li><%= link_to "ユーザ詳細画面へ", user_path(current_user.id),class:'glyphicon glyphicon-user'%></li>
-                  <li><%= link_to "投稿する", new_post_path,class:'glyphicon glyphicon-book' %></li>
-                  <li><%= link_to "投稿一覧", posts_path,class:'glyphicon glyphicon-pencil' %></li>
+                  <li><%= link_to "投稿する", new_post_path,class:'glyphicon glyphicon-pencil' %></li>
+                  <li><%= link_to "投稿一覧", posts_path,class:'glyphicon glyphicon-book' %></li>
                   <li><%= link_to "グラフ", timers_path,class:'glyphicon glyphicon-stats' %></li>
             <% else %>
                   <li><%= link_to "ログイン画面", new_user_session_path,class:'glyphicon glyphicon-user' %></li>

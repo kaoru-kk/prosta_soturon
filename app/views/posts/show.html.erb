@@ -6,6 +6,25 @@
 
     <div class="post_title"><%= markdown(@post.title) %></div>
 
+  <% if @post.user_id != current_user.id %>
+    <% if @post.favorited_check?(current_user.id) %>
+        <%= link_to post_favorite_path(@post.id), method: :delete do %>
+            <div class="heart">❤️<%= @post.favorites.count%></div>
+        <% end %>
+            この投稿にいいねしています
+    <% else %>
+        <%= link_to post_favorites_path(@post.id), method: :post do %>
+            <div class="heart">♡<%= @post.favorites.count%></div>
+        <% end %>
+
+        いいねしますか？
+    <% end %>
+        <% if @post.images.attached? %>
+            <% @post.images.each do |image| %>
+                <p><%= image_tag image, size:"200x200" %></p>
+            <% end %>
+        <% end %>
+  <% end %>
 
         <% if @post.images.attached? %>
             <% @post.images.each do |image| %>
@@ -21,8 +40,6 @@
         | <%= link_to "編集する", edit_post_path %> | <%= link_to "投稿の削除", post_path(@post), method: :delete, data: {confirm: "投稿を削除しますか？"} %> 
     <% end %>
 </div>
-
-
 
 <style>
 
@@ -41,4 +58,7 @@
     width:150px;
     border: solid 1px #dcdcdc;
     background-color: #dcdcdc;
+}
+.heart{
+    font-size: 20px;
 }

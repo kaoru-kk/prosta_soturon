@@ -13,7 +13,7 @@
 
 <h2 class="page_title">＜ みんなの投稿 ＞</h2>
 
-<a href= "#" class="glyphicon glyphicon-search" id="custom_search">カスタム検索</a>
+<a class="glyphicon glyphicon-search" id="custom_search">カスタム検索</a>
 
 <div class="post_all">
     <% @posts.each do |post| %>
@@ -42,7 +42,6 @@
     <% end %>
     <div class="paginate"><%= paginate @posts, class:"paginate" %></div>
 </div>
-
 </div>
 <style>
 /* search */
@@ -139,20 +138,15 @@ textarea{
 </style>
 
 <script>
-
-$(document).on('click', "#custom_search", function(){
-    $("#custom_search").fadeToggle();
-    $('.post_all').fadeToggle();
-    $('.page_title').fadeToggle();
-    $(".search").slideToggle();
-    return false;
+jQuery(function(){
+    $(document).on('click', "#custom_search", function(){
+        $(".search, #custom_search, .post_all, .page_title").stop().slideToggle();
+    });
 });
 
-$("#remove").on("click",function(){
-    $("#custom_search").slideToggle();
-    $('.post_all').slideToggle();
-    $('.page_title').slideToggle();
-    $(".search").fadeToggle();
-    return false;
+jQuery(function(){
+    $(document).on("click","#remove", function(){
+        $(".search, #custom_search, .post_all, .page_title").stop().slideToggle();
+    });
 });
 </script>

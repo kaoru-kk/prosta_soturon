@@ -113,7 +113,7 @@ class TimersController < ApplicationController
     timer.min = params[:timer][:min]
     timer.sec = params[:timer][:sec]
     timer.detail = params[:timer][:detail]
-    timer.save
+    timer.save!
     redirect_to timer_path(timer.id)
   end
 

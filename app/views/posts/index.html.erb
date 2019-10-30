@@ -1,4 +1,3 @@
-
 <div class="search">
     <div class="glyphicon glyphicon-remove", id="remove"></div>
     <%= search_form_for(@search,url:posts_path) do |f|%>
@@ -10,12 +9,11 @@
     <% end %>
 </div>
 
+<a  class="glyphicon glyphicon-search" id="custom_search">カスタム検索</a>
 
-<a href= "#" class="glyphicon glyphicon-search" id="custom_search">カスタム検索</a>
-
-    <div id="other_user">
-        <%= link_to "みんなの投稿はこちら" ,posts_other_users_posts_path %>
-    </div>
+<div id="other_user">
+    <%= link_to "いいねした投稿" ,posts_favorites_path %> / <%= link_to "みんなの投稿" ,posts_other_users_posts_path %>
+</div>
 
 <div class="post_all">
 
@@ -82,7 +80,7 @@
 #other_user{
     font-size:19px;
     margin-top:20px;
-    margin-left:64%;
+    margin-left:59%;
 }
 .post_top{
     background-color: skyblue;
@@ -132,18 +130,38 @@ textarea{
 </style>
 
 <script>
-
-$(document).on('click', "#custom_search", function(){
-    $("#custom_search").fadeToggle();
-    $('.post_all').fadeToggle();
-    $(".search").slideToggle();
-    return false;
+$(function(){
+    $(document).on('click', "#custom_search", function(){
+        $(".search, #custom_search, .post_all, #other_user").stop().slideToggle();
+    });
 });
+$(function(){
+    $(document).on("click", "#remove", function(){
+        $(".search , #custom_search, .post_all, #other_user").stop().slideToggle();
+    })
+})
 
-$("#remove").on("click",function(){
-    $("#custom_search").slideToggle();
-    $('.post_all').slideToggle();
-    $(".search").fadeToggle();
-    return false;
-});
+
+// jQuery(function(){
+//     $(document).on('click', "#custom_search", function(){
+//     $("#custom_search").fadeToggle();
+//     $('.post_all').fadeToggle();
+//     $(".search").slideToggle();
+//     return false;
+//   });
+// });
+
+// jQuery(function(){
+//     $("#remove").on("click",function(){
+//     $("#custom_search").slideToggle();
+//     $('.post_all').slideToggle();
+//     $(".search").fadeToggle();
+//     return false;
+//   });
+// })
+$(".post_each").each(function(e, i){
+    console.log(i);
+})
+
+
 </script>

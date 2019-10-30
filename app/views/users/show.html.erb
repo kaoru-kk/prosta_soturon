@@ -40,10 +40,10 @@
         </div>
 
             <form>
-                <input type="button" id="start" value="Start">
-                <input type="button" id="stop" value="Stop" disabled>
-                <input type="button" id="restart" value="Restart" disabled>
-                <input type="button" id="finish" value="finish" disabled>
+                <input type="button" class="btn btn-default" id="start" value="スタート" style="width: 64px;">
+                <input type="button" class="btn btn-default" id="stop" value="ストップ" disabled style="width: 64px;"><br>
+                <input type="button" class="btn btn-default" id="restart" value="リスタート" disabled style="width: 64px;">
+                <input type="button" class="btn btn-default" id="finish" value="終了" disabled style="width: 64px;">
             </form>
           </div>
 
@@ -287,6 +287,9 @@ $(function(){
 }
 
 /* ストップウォッチ関連 */
+input[type="button"]{
+  padding: 0;
+}
 .right{
   margin: 0 10px 0 70px;
 }

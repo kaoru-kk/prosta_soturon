@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class PostsController < ApplicationController
-  before_action :post_user, except: %i[index show new update create search other_posts]
+  before_action :post_user, except: %i[index show new update create search other_posts fav_post]
 
   def index
     @posts = current_user.posts.page(params[:page]).reverse_order
@@ -59,6 +59,19 @@ class PostsController < ApplicationController
 
   def other_posts
     @posts = Post.page(params[:page]).reverse_order
+    @search = Post.ransack(params[:q])
+    @lang = Language.all
+    unless params[:q].nil?
+      @search_search = current_user.posts.ransack(params[:q])
+      @lang = Language.all
+      @search = current_user.posts.search(search_params)
+      @inu = @search.result(distinct: true)
+      @posts = @inu.page(params[:page]).reverse_order
+    end
+  end
+
+  def fav_post
+    @posts = current_user.favorites.page(params[:page]).reverse_order
     @search = Post.ransack(params[:q])
     @lang = Language.all
     unless params[:q].nil?
